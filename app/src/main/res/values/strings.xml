@@ -1,0 +1,30 @@
+<resources>
+
+    <string name="activity_error">Activity cannot be null</string>
+    <string name="app_name">Project Quiz</string>
+    <string name="armenian_quiz">Armenian Quiz</string>
+    <string name="smart_game">Smart Game</string>
+    <string name="users">Users</string>
+
+    <string name="start">Խաղի մասնակցի տվյալների վավերացում</string>
+    <string name="cancel">Կասեցնել</string>
+
+    <string name="register">Գրանցվել</string>
+    <string name="registerTitle">Գրանցում</string>
+    <string name="registerMessage">Մուտքագրեք պահանջվող տվյալները գրանցման համար։</string>
+    <string name="register_failed">Գրանցման ձախողում․ </string>
+    <string name="register_ok">Խաղի մասնակիցը հաջողությամբ գրանցվել է։ </string>
+
+    <string name="login">Մուտք գործել</string>
+    <string name="loginTitle">Մուտք</string>
+    <string name="loginMessage">Մուտքագրեք պահանջվող տվյալները մուտքի համար։</string>
+    <string name="login_failed">Մուտքի ձախողում․ </string>
+
+    <string name="username">Օգտվողի անուն</string>
+    <string name="username_empty">Մուտքագրեք ձեր օգտանունը</string>
+    <string name="email">Email</string>
+    <string name="email_empty">Մուտքագրեք ձեր էլ․ հասցեն</string>
+    <string name="password">Գաղտնաբառ</string>
+    <string name="password_wrong">Մուտքագրեք 5-ից ավել սիմվոլներից բաղկացած գաղտնաբառ</string>
+
+</resources>

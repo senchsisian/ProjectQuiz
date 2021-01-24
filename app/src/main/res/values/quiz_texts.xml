@@ -1,0 +1,8 @@
+<resources>
+    <string name="question">Պատմական որ դարաշրջանի դեպքերն են պատկերված Րաֆֆու "Սամվել" պատմավեպում։</string>
+    <string name="answer_1">IV դարի երկրորդ կես</string>
+    <string name="answer_2">V դարի վերջ</string>
+    <string name="answer_3">IX դար</string>
+    <string name="answer_4">X դար</string>
+    <string name="right_answer">X դար</string>
+</resources>
