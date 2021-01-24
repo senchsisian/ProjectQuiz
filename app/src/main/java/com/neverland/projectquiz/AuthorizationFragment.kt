@@ -79,7 +79,7 @@ class AuthorizationFragment : Fragment() {
         }
     }
 
-    override fun onResume() {
+    override fun onResume() {  //Յուրա ջան, գրանցման և մուտքի համար onResume եմ օգտագործել, ճի՞շտ եմ արել։
         super.onResume()
         //Իրականացվում է մուտքի վավերացման տվյալների ստացում
         loginEmail = arguments?.getString(GET_EMAIL_INPUT_DIALOG) ?: EMPTY
