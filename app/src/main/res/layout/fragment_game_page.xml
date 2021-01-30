@@ -9,6 +9,7 @@
 
 
     <LinearLayout
+        android:id="@+id/first_linear"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -25,12 +26,12 @@
 
             <TextView
                 android:id="@+id/questionText"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:text="@string/ask"
                 android:textColor="@color/white"
-                android:textSize="35sp"
+                android:textSize="30sp"
                 android:textStyle="bold"/>
 
             <LinearLayout

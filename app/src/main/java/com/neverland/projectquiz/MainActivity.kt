@@ -7,7 +7,7 @@ const val AUTHORIZATION_FRAGMENT_TAG="AUTHORIZATION FRAGMENT TAG"
 const val EMPTY=""
 
 class MainActivity : AppCompatActivity() {
-     var authorizationFragment=AuthorizationFragment()
+     private var authorizationFragment= AuthorizationFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

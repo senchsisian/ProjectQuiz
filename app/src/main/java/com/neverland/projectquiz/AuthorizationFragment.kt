@@ -49,7 +49,7 @@ class AuthorizationFragment : Fragment() {
         //Firebase-ի կարգավրումներ և նախապատրաստում
         firebaseAuth = FirebaseAuth.getInstance()
         db = FirebaseDatabase.getInstance()
-        users = db.getReference(getText(R.string.users).toString())
+        users = db.getReference("Users")
     }
 
     override fun onCreateView(

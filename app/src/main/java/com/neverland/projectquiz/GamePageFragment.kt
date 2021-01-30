@@ -8,12 +8,11 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.neverland.projectquiz.models.AnswersAndQuestion
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import com.neverland.projectquiz.models.TimerModel
 
 const val KEY = "key"
 
@@ -23,30 +22,33 @@ class GamePageFragment : Fragment() {
     private lateinit var answerThree: Button
     private lateinit var answerFour: Button
     private lateinit var questionText: TextView
+    private lateinit var timerText: TextView
+
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var db: FirebaseDatabase
     private lateinit var quiz: DatabaseReference
+
     private var getData = mutableListOf<AnswersAndQuestion>()
     var quizData = AnswersAndQuestion()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         //գրանցում է շտեմարանը
         firebaseAuth = FirebaseAuth.getInstance()
         db = FirebaseDatabase.getInstance()
         quiz = db.getReference(getString(R.string.quiz))
         //իրականցվում է շտեմարանից տվյալների ստացում
 
-        val quizKingdomVan = quiz.child(getString(R.string.history)).child(getString(R.string.kingdom_of_van))
-        GlobalScope.launch(Dispatchers.Main) {
-            quizKingdomVan.addValueEventListener(valueEventListenerQuiz())
-        }
+        val quizKingdomVan =
+            quiz.child(getString(R.string.history)).child(getString(R.string.kingdom_of_van))
+        quizKingdomVan.addValueEventListener(valueEventListenerQuiz())
     }
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         val infVar = inflater.inflate(R.layout.fragment_game_page, container, false)
         answerOne = infVar.findViewById(R.id.answer_1)
@@ -54,11 +56,16 @@ class GamePageFragment : Fragment() {
         answerThree = infVar.findViewById(R.id.answer_3)
         answerFour = infVar.findViewById(R.id.answer_4)
         questionText = infVar.findViewById(R.id.questionText)
+        timerText = infVar.findViewById(R.id.timer_text)
+        val timerModel = ViewModelProvider(this).get(TimerModel::class.java)
+        timerModel.start()
+        timerModel.timerValue.observe(viewLifecycleOwner, { timerText.text = it.toString()})
         return infVar
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
     }
 
     private fun valueEventListenerQuiz() = object : ValueEventListener {
