@@ -2,6 +2,7 @@ package com.neverland.projectquiz
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.neverland.projectquiz.autorizationandregister.AuthorizationFragment
 
 const val AUTHORIZATION_FRAGMENT_TAG="AUTHORIZATION FRAGMENT TAG"
 const val EMPTY=""

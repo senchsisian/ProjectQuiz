@@ -1,17 +1,20 @@
-package com.neverland.projectquiz
+package com.neverland.projectquiz.autorizationandregister
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.appcompat.app.AppCompatDialogFragment
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.neverland.projectquiz.*
+import com.neverland.projectquiz.gamepackage.GamePageFragment
+import com.neverland.projectquiz.database.GetDataFromFirebase
 import com.neverland.projectquiz.models.User
 
 const val GET_USERNAME = "get username"
@@ -21,6 +24,7 @@ const val USERNAME = "username"
 
 const val REGISTER_DIALOG_FRAGMENT_TAG = "REGISTER DIALOG FRAGMENT"
 const val INPUT_DIALOG_FRAGMENT_TAG = "INPUT DIALOG FRAGMENT"
+
 
 class AuthorizationFragment : Fragment() {
     private lateinit var btnSignIn: Button
@@ -57,9 +61,9 @@ class AuthorizationFragment : Fragment() {
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        val infVar = inflater.inflate(R.layout.fragment_authorization, container, false)
-        btnSignIn = infVar.findViewById(R.id.btnSignIn)
-        btnRegister = infVar.findViewById(R.id.btnRegister)
+        val infVar = inflater.inflate(com.neverland.projectquiz.R.layout.fragment_authorization, container, false)
+        btnSignIn = infVar.findViewById(com.neverland.projectquiz.R.id.btnSignIn)
+        btnRegister = infVar.findViewById(com.neverland.projectquiz.R.id.btnRegister)
         return infVar
     }
 
@@ -115,7 +119,7 @@ class AuthorizationFragment : Fragment() {
     private fun snackBarMake(getText: String, messageText: String = "") {
 
         //Լողացող պատուհանի գեներաացում
-        Snackbar.make((activity as MainActivity).findViewById(R.id.main_activity), getText + messageText, Snackbar.LENGTH_LONG).show()
+        Snackbar.make((activity as MainActivity).findViewById(com.neverland.projectquiz.R.id.main_activity), getText + messageText, Snackbar.LENGTH_LONG).show()
     }
 
     private fun createUser(get_Pass: String, get_Username: String, get_Email: String, is_Register: Boolean): Boolean {
@@ -129,10 +133,10 @@ class AuthorizationFragment : Fragment() {
                         user.username = get_Username
 
                         users.child(firebaseAuth.currentUser!!.uid).setValue(user)
-                                .addOnSuccessListener { snackBarMake(getText(R.string.register_ok).toString()) }
+                                .addOnSuccessListener { snackBarMake(getText(com.neverland.projectquiz.R.string.register_ok).toString()) }
                     }
                     .addOnFailureListener {
-                        snackBarMake(getText(R.string.register_failed).toString(), it.message.toString())
+                        snackBarMake(getText(com.neverland.projectquiz.R.string.register_failed).toString(), it.message.toString())
                     }
         }
         return false
@@ -160,20 +164,23 @@ class AuthorizationFragment : Fragment() {
                         }
                         progressRef.addListenerForSingleValueEvent(valueEventListener)
 
-                        snackBarMake(getText(R.string.login_ok).toString())
+                        snackBarMake(getText(com.neverland.projectquiz.R.string.login_ok).toString())
+
+                        val dataFromFirebase= GetDataFromFirebase()
+                        dataFromFirebase.getDataFromFirebase(this.requireContext())
 
                         fragmentTransaction = (activity as MainActivity).supportFragmentManager.beginTransaction()
                         fragmentTransaction.apply {
-                            this.replace(R.id.main_activity, gamePageFragment)
+                            this.replace(com.neverland.projectquiz.R.id.main_activity, gamePageFragment)
                             commit()
                         }
                     }
 
                     .addOnFailureListener {
-                        snackBarMake(getText(R.string.login_failed).toString(), it.message.toString())
+                        snackBarMake(getText(com.neverland.projectquiz.R.string.login_failed).toString(), it.message.toString())
                     }
+
         }
         return false
     }
-
 }
