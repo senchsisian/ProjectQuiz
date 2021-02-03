@@ -19,6 +19,7 @@
     <string name="loginTitle">Մուտք</string>
     <string name="loginMessage">Մուտքագրեք պահանջվող տվյալները մուտքի համար։</string>
     <string name="login_failed">Մուտքի ձախողում․ </string>
+    <string name="login_ok">Խաղի մասնակիցը հաջողությամբ մուտք է գործել խաղ։ </string>
 
     <string name="username">Օգտվողի անուն</string>
     <string name="username_empty">Մուտքագրեք ձեր օգտանունը</string>
@@ -26,5 +27,12 @@
     <string name="email_empty">Մուտքագրեք ձեր էլ․ հասցեն</string>
     <string name="password">Գաղտնաբառ</string>
     <string name="password_wrong">Մուտքագրեք 5-ից ավել սիմվոլներից բաղկացած գաղտնաբառ</string>
-
+    <string name="_0">0</string>
+    <string name="current_count">Ընթացիկ հաշիվ</string>
+    <string name="_00_00">00։00</string>
+    <string name="question">Հարց</string>
+    <string name="answer_1">Պատասխան 1</string>
+    <string name="answer_2">Պատասխան 2</string>
+    <string name="answer_3">Պատասխան 3</string>
+    <string name="answer_4">Պատասխան 4</string>
 </resources>
