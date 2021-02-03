@@ -27,7 +27,7 @@ class GamePageFragment : Fragment() {
     private lateinit var questionText: TextView
     private lateinit var timerText: TextView
     private lateinit var dataDB: DataDB
-    private  lateinit var getDataList:List<DataModel>
+    private lateinit var getDataList:List<DataModel>
    // private val indexOfData=0
 
     override fun onCreate(savedInstanceState: Bundle?) {

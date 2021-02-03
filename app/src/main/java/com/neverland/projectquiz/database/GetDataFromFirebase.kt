@@ -26,7 +26,7 @@ class GetDataFromFirebase {
     private lateinit var quiz: DatabaseReference
     private lateinit var dataDB: DataDB
     private  var dataMutable= mutableListOf<DataModel>()
-    var getElement=DataModel(Random.nextInt(),0,"","","","","","")
+    private var getElement=DataModel(Random.nextInt(),0,"","","","","","")
 
     fun getDataFromFirebase(context: Context){
         //գրանցում է SQLLite DataBase
