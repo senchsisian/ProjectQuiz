@@ -1,20 +1,23 @@
 package com.neverland.projectquiz.autorizationandregister
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
-import com.neverland.projectquiz.*
+import com.neverland.projectquiz.EMPTY
+import com.neverland.projectquiz.MainActivity
+import com.neverland.projectquiz.R
 import com.neverland.projectquiz.gamepackage.GamePageFragment
-import com.neverland.projectquiz.database.GetDataFromFirebase
 import com.neverland.projectquiz.models.User
 
 const val GET_USERNAME = "get username"
@@ -27,15 +30,9 @@ const val INPUT_DIALOG_FRAGMENT_TAG = "INPUT DIALOG FRAGMENT"
 
 
 class AuthorizationFragment : Fragment() {
-    private lateinit var btnSignIn: Button
-    private lateinit var btnRegister: Button
-
-    private lateinit var firebaseAuth: FirebaseAuth
-    private lateinit var db: FirebaseDatabase
-    private lateinit var users: DatabaseReference
-
-    private lateinit var fragmentTransaction: FragmentTransaction
-
+    private var progressBar: ProgressBar? = null
+    private var btnSignIn: Button? = null
+    private var btnRegister: Button? = null
     private var getEmail: String = EMPTY
     private var loginEmail: String = EMPTY
     private var getPass: String = EMPTY
@@ -44,26 +41,42 @@ class AuthorizationFragment : Fragment() {
     private var loginUsername: String = EMPTY
     private var isLogin: Boolean = false
     private var isRegister: Boolean = false
-
     private var gamePageFragment = GamePageFragment()
+//    private var sharedPreferences =
+//        activity?.getSharedPreferences("authorization", Context.MODE_PRIVATE)
+    private lateinit var fragmentTransaction: FragmentTransaction
+    private lateinit var firebaseAuth: FirebaseAuth
+    private lateinit var db: FirebaseDatabase
+    private lateinit var users: DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         //Firebase-ի կարգավրումներ և նախապատրաստում
         firebaseAuth = FirebaseAuth.getInstance()
         db = FirebaseDatabase.getInstance()
         users = db.getReference("Users")
+
+//        val sharedEmail = sharedPreferences?.getString(GET_EMAIL, "")
+//        val sharedPass = sharedPreferences?.getString(GET_PASS, "")
+//        if (sharedEmail != "" && sharedPass != "") {
+//            fragmentTransaction =
+//                (activity as MainActivity).supportFragmentManager.beginTransaction()
+//            fragmentTransaction.apply {
+//                this.replace(R.id.main_activity, gamePageFragment)
+//                commit()
+//            }
+//        }
     }
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
-        val infVar = inflater.inflate(com.neverland.projectquiz.R.layout.fragment_authorization, container, false)
-        btnSignIn = infVar.findViewById(com.neverland.projectquiz.R.id.btnSignIn)
-        btnRegister = infVar.findViewById(com.neverland.projectquiz.R.id.btnRegister)
+        val infVar = inflater.inflate(R.layout.fragment_authorization, container, false)
+        btnSignIn = infVar.findViewById(R.id.btnSignIn)
+        btnRegister = infVar.findViewById(R.id.btnRegister)
+        progressBar = infVar.findViewById(R.id.getProgressBar)
         return infVar
     }
 
@@ -71,13 +84,13 @@ class AuthorizationFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         //կանչվում է մուտքագրման պատուհանը
-        btnSignIn.setOnClickListener {
+        btnSignIn?.setOnClickListener {
             onPause()
             callDialogFragment(InputDialogFragment(), INPUT_DIALOG_FRAGMENT_TAG)
         }
 
         // կանչվում է գրանցման պատուհանը
-        btnRegister.setOnClickListener {
+        btnRegister?.setOnClickListener {
             onPause()
             callDialogFragment(RegisterDialogFragment(), REGISTER_DIALOG_FRAGMENT_TAG)
         }
@@ -97,7 +110,9 @@ class AuthorizationFragment : Fragment() {
         isRegister = arguments?.getBoolean(IS_REGISTER) ?: isRegister
 
         //Իրականացվում է մուտքի վավերացման տվյալների ստուգում  և մուտք
+
         isLogin = loginUser(loginPass, loginEmail, isLogin)
+
         //Իրականացվում է գրանցման տվյալների ստուգում և գրանցում
         isRegister = createUser(getPass, getUsername, getEmail, isRegister)
     }
@@ -119,25 +134,37 @@ class AuthorizationFragment : Fragment() {
     private fun snackBarMake(getText: String, messageText: String = "") {
 
         //Լողացող պատուհանի գեներաացում
-        Snackbar.make((activity as MainActivity).findViewById(com.neverland.projectquiz.R.id.main_activity), getText + messageText, Snackbar.LENGTH_LONG).show()
+        Snackbar.make(
+            (activity as MainActivity).findViewById(R.id.main_activity),
+            getText + messageText,
+            Snackbar.LENGTH_LONG
+        ).show()
     }
 
-    private fun createUser(get_Pass: String, get_Username: String, get_Email: String, is_Register: Boolean): Boolean {
+    private fun createUser(
+        get_Pass: String,
+        get_Username: String,
+        get_Email: String,
+        is_Register: Boolean
+    ): Boolean {
         //Իրականացվում է գրանցման տվյալների ստուգում և գրանցում
         if (get_Pass != "" && get_Username != "" && get_Email != "" && is_Register) {
             firebaseAuth.createUserWithEmailAndPassword(get_Email, get_Pass)
-                    .addOnSuccessListener {
-                        val user = User()
-                        user.email = get_Email
-                        user.pass = get_Pass
-                        user.username = get_Username
+                .addOnSuccessListener {
+                    val user = User()
+                    user.email = get_Email
+                    user.pass = get_Pass
+                    user.username = get_Username
 
-                        users.child(firebaseAuth.currentUser!!.uid).setValue(user)
-                                .addOnSuccessListener { snackBarMake(getText(com.neverland.projectquiz.R.string.register_ok).toString()) }
-                    }
-                    .addOnFailureListener {
-                        snackBarMake(getText(com.neverland.projectquiz.R.string.register_failed).toString(), it.message.toString())
-                    }
+                    users.child(firebaseAuth.currentUser!!.uid).setValue(user)
+                        .addOnSuccessListener { snackBarMake(getText(R.string.register_ok).toString()) }
+                }
+                .addOnFailureListener {
+                    snackBarMake(
+                        getText(R.string.register_failed).toString(),
+                        it.message.toString()
+                    )
+                }
         }
         return false
     }
@@ -146,39 +173,41 @@ class AuthorizationFragment : Fragment() {
         //Իրականացվում է մուտքի վավերացման տվյալների ստուգում  և մուտք
         if (login_Pass != "" && login_Email != "" && is_Login) {
             firebaseAuth.signInWithEmailAndPassword(login_Email, login_Pass)
-                    .addOnSuccessListener {
+                .addOnSuccessListener {
 
-                        val progressRef = users.child(firebaseAuth.currentUser!!.uid)
-                        val valueEventListener = object : ValueEventListener {
-                            override fun onDataChange(snapshot: DataSnapshot) {
-                                for (dSnapshot in snapshot.children) {
-                                    val key: String = dSnapshot.key.toString()
-                                    val value: String = dSnapshot.value.toString()
-                                    if (key == USERNAME) loginUsername = value  //մուտքի ժամանակ ստանում ենք օգտվողի անունը
-                                }
-                            }
-
-                            override fun onCancelled(error: DatabaseError) {
-                                Log.v("error", error.message)
+                    val progressRef = users.child(firebaseAuth.currentUser!!.uid)
+                    val valueEventListener = object : ValueEventListener {
+                        override fun onDataChange(snapshot: DataSnapshot) {
+                            for (dSnapshot in snapshot.children) {
+                                val key: String = dSnapshot.key.toString()
+                                val value: String = dSnapshot.value.toString()
+                                if (key == USERNAME) loginUsername =
+                                    value  //մուտքի ժամանակ ստանում ենք օգտվողի անունը
                             }
                         }
-                        progressRef.addListenerForSingleValueEvent(valueEventListener)
 
-                        snackBarMake(getText(com.neverland.projectquiz.R.string.login_ok).toString())
-
-                        val dataFromFirebase= GetDataFromFirebase()
-                        dataFromFirebase.getDataFromFirebase(this.requireContext())
-
-                        fragmentTransaction = (activity as MainActivity).supportFragmentManager.beginTransaction()
-                        fragmentTransaction.apply {
-                            this.replace(com.neverland.projectquiz.R.id.main_activity, gamePageFragment)
-                            commit()
+                        override fun onCancelled(error: DatabaseError) {
+                            Log.v("error", error.message)
                         }
                     }
+                    progressRef.addListenerForSingleValueEvent(valueEventListener)
 
-                    .addOnFailureListener {
-                        snackBarMake(getText(com.neverland.projectquiz.R.string.login_failed).toString(), it.message.toString())
+                    snackBarMake(getText(R.string.login_ok).toString())
+
+//                    sharedPreferences?.edit()?.putString(GET_EMAIL, login_Email)?.apply()
+//                    sharedPreferences?.edit()?.putString(GET_PASS, login_Pass)?.apply()
+
+                    fragmentTransaction =
+                        (activity as MainActivity).supportFragmentManager.beginTransaction()
+                    fragmentTransaction.apply {
+                        this.replace(R.id.main_activity, gamePageFragment)
+                        commit()
                     }
+                }
+
+                .addOnFailureListener {
+                    snackBarMake(getText(R.string.login_failed).toString(), it.message.toString())
+                }
 
         }
         return false

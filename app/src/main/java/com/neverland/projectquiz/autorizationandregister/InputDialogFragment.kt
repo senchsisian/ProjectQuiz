@@ -21,8 +21,8 @@ const val IS_LOGIN="is login"
 
  class InputDialogFragment : AppCompatDialogFragment(){
 
-    private lateinit var email: MaterialEditText
-    private lateinit var pass: MaterialEditText
+    var email: MaterialEditText?=null
+    var pass: MaterialEditText?=null
     private lateinit var root:FrameLayout
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -48,22 +48,22 @@ const val IS_LOGIN="is login"
                         try {
                             when {
                                 //գրանցվողի email-ի ստուգման տող
-                                TextUtils.isEmpty(email.text) -> {
+                                TextUtils.isEmpty(email?.text) -> {
                                     Snackbar.make(root, getText(R.string.email_empty), Snackbar.LENGTH_SHORT).show()
                                 }
                                 //գրանցվողի գաղտնաբառի ստուգման տող
-                                pass.text.toString().length<6 -> {
-                                    pass.setText(EMPTY)
+                                pass?.text.toString().length<6 -> {
+                                    pass?.setText(EMPTY)
                                     Snackbar.make(root, getText(R.string.password_wrong), Snackbar.LENGTH_SHORT).show()
                                 }
                             }
                             //մուտքագրված տվյալները վերադարձնում է վավերացման պատուհան
                             val bundle=Bundle()
-                            bundle.putString(GET_EMAIL_INPUT_DIALOG, email.text.toString())
-                            bundle.putString(GET_PASS_INPUT_DIALOG, pass.text.toString())
+                            bundle.putString(GET_EMAIL_INPUT_DIALOG, email?.text.toString())
+                            bundle.putString(GET_PASS_INPUT_DIALOG, pass?.text.toString())
                             bundle.putBoolean(IS_LOGIN,true)
 
-                            val currentFragment: Fragment? =fragmentManager!!.findFragmentByTag(AUTHORIZATION_FRAGMENT_TAG)
+                            val currentFragment: Fragment? =requireFragmentManager().findFragmentByTag(AUTHORIZATION_FRAGMENT_TAG)
                             currentFragment!!.arguments=bundle
                             currentFragment.onResume()
                         } catch (e: Exception) {

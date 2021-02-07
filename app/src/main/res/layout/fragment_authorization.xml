@@ -10,89 +10,99 @@
 
 
     <LinearLayout
-        android:id="@+id/linear1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="25dp"
-        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/calligraffitti"
-            android:text="@string/armenian_quiz"
-            android:textAlignment="center"
-            android:textColor="@color/white"
-            android:textSize="35sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/linear1"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
-            android:text="@string/smart_game"
-            android:textAlignment="center"
-            android:textColor="@color/white"
-            android:textSize="25sp"/>
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_weight="1">
 
-        <ImageView
-            android:id="@+id/main_apricot"
-            android:layout_width="225dp"
-            android:layout_height="282dp"
-            android:layout_margin="25dp"
-            app:srcCompat="@drawable/main_apricot" />
-    </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/calligraffitti"
+                android:text="@string/armenian_quiz"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="35sp" />
 
-    <TextView
-        android:id="@+id/getStart"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="55dp"
-        android:gravity="center_horizontal"
-        android:paddingStart="25dp"
-        android:paddingEnd="25dp"
-        android:text="@string/start"
-        android:textColor="@color/sign_in_stroke"
-        android:textSize="16sp"
-        android:textStyle="bold" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:text="@string/smart_game"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="25sp" />
 
-    <LinearLayout
-        android:id="@+id/linear2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/getStart"
-        android:layout_marginBottom="25dp"
-        android:orientation="horizontal"
-        android:weightSum="2">
+            <ImageView
+                android:id="@+id/main_apricot"
+                android:layout_width="225dp"
+                android:layout_height="282dp"
+                android:layout_margin="25dp"
+                app:srcCompat="@drawable/main_apricot" />
+        </LinearLayout>
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnSignIn"
-            android:layout_width="wrap_content"
+        <ProgressBar
+            android:id="@+id/getProgressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:id="@+id/linear2"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_weight="1"
-            android:background="@drawable/btn_sign_in"
-            android:text="@string/login"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            android:textStyle="bold"/>
+            android:layout_marginBottom="25dp"
+            android:orientation="horizontal"
+            android:weightSum="2">
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnRegister"
-            android:layout_width="wrap_content"
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnSignIn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/btn_sign_in"
+                android:text="@string/login"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnRegister"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/btn_sign_in"
+                android:text="@string/register"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/getStart"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_weight="1"
-            android:background="@drawable/btn_sign_in"
-            android:text="@string/register"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            android:textStyle="bold"/>
+            android:gravity="center_horizontal"
+            android:paddingStart="25dp"
+            android:paddingEnd="25dp"
+            android:text="@string/start"
+            android:textColor="@color/sign_in_stroke"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="30dp"/>
+
     </LinearLayout>
 
 </RelativeLayout>
