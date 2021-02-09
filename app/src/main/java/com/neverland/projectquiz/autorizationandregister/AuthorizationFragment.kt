@@ -201,6 +201,7 @@ class AuthorizationFragment : Fragment() {
                         (activity as MainActivity).supportFragmentManager.beginTransaction()
                     fragmentTransaction.apply {
                         this.replace(R.id.main_activity, gamePageFragment)
+                        this.remove(this@AuthorizationFragment)
                         commit()
                     }
                 }

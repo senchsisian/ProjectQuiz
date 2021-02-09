@@ -88,11 +88,15 @@ class GamePageFragment : Fragment() {
             showNextQuestion()
             timerView()
         }
+
+        backButton?.setOnClickListener {
+            activity?.supportFragmentManager?.popBackStack()
+        }
     }
 
     private fun showNextQuestion() {
         if (indexOfData >= dataList.size) {
-            onDestroyView()
+            activity?.supportFragmentManager?.popBackStack()
         } else {
             updateViewsWithData(dataList[indexOfData])
             indexOfData++
@@ -103,35 +107,19 @@ class GamePageFragment : Fragment() {
     private fun updateViewsWithData(singleData: DataModel) {
         rightAnswerButtonNumber = 0
         answerRight = singleData.answerRight
-        answerOne.apply {
-            text = singleData.answer1
-            if (singleData.answer1 == singleData.answerRight) {
-                background = resources.getDrawable(R.drawable.btn_right_answer)
-                rightAnswerButtonNumber = 1
-            } else background = resources.getDrawable(R.drawable.btn_wrong_answer)
-        }
-        answerTwo.apply {
-            text = singleData.answer2
-            if (singleData.answer2 == singleData.answerRight) {
-                background = resources.getDrawable(R.drawable.btn_right_answer)
-                rightAnswerButtonNumber = 2
-            } else background = resources.getDrawable(R.drawable.btn_wrong_answer)
-        }
-        answerThree.apply {
-            text = singleData.answer3
-            if (singleData.answer3 == singleData.answerRight) {
-                background = resources.getDrawable(R.drawable.btn_right_answer)
-                rightAnswerButtonNumber = 3
-            } else background = resources.getDrawable(R.drawable.btn_wrong_answer)
-        }
-        answerFour.apply {
-            text = singleData.answer4
-            if (singleData.answer4 == singleData.answerRight) {
-                background = resources.getDrawable(R.drawable.btn_right_answer)
-                rightAnswerButtonNumber = 4
-            } else background = resources.getDrawable(R.drawable.btn_wrong_answer)
-        }
+        answerOne.text=singleData.answer1
+        answerTwo.text=singleData.answer2
+        answerThree.text=singleData.answer3
+        answerFour.text=singleData.answer4
         questionText.text = singleData.question
+
+        rightAnswerButtonNumber=when(answerRight){
+            answerOne.text->1
+            answerTwo.text->2
+            answerThree.text->3
+            answerFour.text->4
+            else->0
+        }
     }
 
     private fun initViews(view: View) {

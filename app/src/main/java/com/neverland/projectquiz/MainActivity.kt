@@ -10,21 +10,17 @@ import com.neverland.projectquiz.database.GetDataFromFirebase
 const val AUTHORIZATION_FRAGMENT_TAG="AUTHORIZATION FRAGMENT TAG"
 const val EMPTY=""
 
- class MainActivity : AppCompatActivity() {
-     private var authorizationFragment= AuthorizationFragment()
+class MainActivity : AppCompatActivity() {
+    private var authorizationFragment= AuthorizationFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        try{val dataFromFirebase = GetDataFromFirebase()
-        dataFromFirebase.getDataFromFirebase(this)}
-        catch(e:Exception){
-            Toast.makeText(this,e.toString(),Toast.LENGTH_LONG).show()
-        }
+        try{
+            val dataFromFirebase = GetDataFromFirebase()
+            dataFromFirebase.getDataFromFirebase(this)
 
-        //բացվում է օգտագործողի վավերացման պատուհանը
-        try {
             supportFragmentManager.beginTransaction().apply {
                 this.add(R.id.main_activity, authorizationFragment, AUTHORIZATION_FRAGMENT_TAG)
                 commit()
@@ -33,6 +29,4 @@ const val EMPTY=""
             Toast.makeText(this,e.toString(),Toast.LENGTH_LONG).show()
         }
     }
-
-
 }
