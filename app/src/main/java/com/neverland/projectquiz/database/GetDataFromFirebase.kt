@@ -5,20 +5,11 @@ import android.util.Log
 import androidx.room.Room
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.neverland.projectquiz.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlin.random.Random
-
-const val QUIZ = "Quiz"
-const val HISTORY = "History"
-const val KINGDOM_OF_VAN = "KingdomOfVan"
-const val ANSWER_1 = "Answer1"
-const val ANSWER_2 = "Answer2"
-const val ANSWER_3 = "Answer3"
-const val ANSWER_4 = "Answer4"
-const val ANSWER_RIGHT = "AnswerRight"
-const val QUESTION = "Question"
 
 class GetDataFromFirebase {
     private lateinit var firebaseAuth: FirebaseAuth
@@ -26,15 +17,16 @@ class GetDataFromFirebase {
     private lateinit var quiz: DatabaseReference
     private lateinit var dataDB: DataDB
     private var dataMutable = mutableListOf<DataModel>()
-    private var getElement = DataModel(Random.nextInt(), 0, "", "", "", "", "", "")
+    private var getElement = DataModel(Random.nextInt(), "", 0, "", "", "", "", "", "")
 
-    fun getDataFromFirebase(context: Context) {
-        //գրանցում է SQLLite DataBase
+    fun getDataFromFirebase(context: Context, column: String) {
+        //մաքրում է SQLLite DataBase
         dataDB = Room.databaseBuilder(context, DataDB::class.java, GET_DATA).build()
         GlobalScope.launch(Dispatchers.IO) {
             dataDB.getDataDao().deleteAll()
             Log.v("Removing elements", getElement.toString())
         }
+
         //գրանցում է շտեմարանը
         firebaseAuth = FirebaseAuth.getInstance()
         db = FirebaseDatabase.getInstance()
@@ -49,6 +41,7 @@ class GetDataFromFirebase {
                     for (dS in dSnapshot.children) {
                         val key1: String = dS.key.toString()
                         val value: String = dS.value.toString()
+                        getElement.column = column
                         when (key1) {
                             ANSWER_1 -> getElement.answer1 = value
                             ANSWER_2 -> getElement.answer2 = value
@@ -61,7 +54,7 @@ class GetDataFromFirebase {
                     getElement.id = key
                     getElement.idKey = Random.nextInt()
                     dataMutable.add(getElement)
-                    getElement = DataModel(Random.nextInt(), 0, "", "", "", "", "", "")
+                    getElement = DataModel(Random.nextInt(), "", 0, "", "", "", "", "", "")
                 }
                 val sizeData = dataMutable.size
                 if (sizeData > 0) for (i in 0 until sizeData) {
@@ -77,7 +70,7 @@ class GetDataFromFirebase {
         }
 
         //իրականցվում է շտեմարանից տվյալների ստացում
-        val quizKingdomVan = quiz.child(HISTORY).child(KINGDOM_OF_VAN)
+        val quizKingdomVan = quiz.child(HISTORY).child(column)
         quizKingdomVan.addValueEventListener(valueEventListenerQuiz)
     }
 }

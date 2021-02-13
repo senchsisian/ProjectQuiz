@@ -1,33 +1,27 @@
 package com.neverland.projectquiz.autorizationandregister
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
-import com.neverland.projectquiz.EMPTY
-import com.neverland.projectquiz.MainActivity
+import com.neverland.projectquiz.*
 import com.neverland.projectquiz.R
-import com.neverland.projectquiz.gamepackage.GamePageFragment
+import com.neverland.projectquiz.gamepackage.MenuPageFragment
+import com.neverland.projectquiz.gamepackage.StartPageFragment
 import com.neverland.projectquiz.models.User
-
-const val GET_USERNAME = "get username"
-const val GET_EMAIL = "get email"
-const val GET_PASS = "get pass"
-const val USERNAME = "username"
-
-const val REGISTER_DIALOG_FRAGMENT_TAG = "REGISTER DIALOG FRAGMENT"
-const val INPUT_DIALOG_FRAGMENT_TAG = "INPUT DIALOG FRAGMENT"
-
 
 class AuthorizationFragment : Fragment() {
     private var progressBar: ProgressBar? = null
@@ -41,9 +35,9 @@ class AuthorizationFragment : Fragment() {
     private var loginUsername: String = EMPTY
     private var isLogin: Boolean = false
     private var isRegister: Boolean = false
-    private var gamePageFragment = GamePageFragment()
-//    private var sharedPreferences =
-//        activity?.getSharedPreferences("authorization", Context.MODE_PRIVATE)
+    private var menuPageFragment = MenuPageFragment()
+    private var sharedPreferences =
+        activity?.getSharedPreferences("authorization", Context.MODE_PRIVATE)
     private lateinit var fragmentTransaction: FragmentTransaction
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var db: FirebaseDatabase
@@ -56,16 +50,21 @@ class AuthorizationFragment : Fragment() {
         db = FirebaseDatabase.getInstance()
         users = db.getReference("Users")
 
-//        val sharedEmail = sharedPreferences?.getString(GET_EMAIL, "")
-//        val sharedPass = sharedPreferences?.getString(GET_PASS, "")
-//        if (sharedEmail != "" && sharedPass != "") {
-//            fragmentTransaction =
-//                (activity as MainActivity).supportFragmentManager.beginTransaction()
-//            fragmentTransaction.apply {
-//                this.replace(R.id.main_activity, gamePageFragment)
-//                commit()
-//            }
-//        }
+        val sharedEmail = sharedPreferences?.getString(GET_EMAIL, "")
+        val sharedPass = sharedPreferences?.getString(GET_PASS, "")
+        Toast.makeText(
+            activity,
+            "sharedEmail & sharedPass $sharedEmail $sharedPass",
+            Toast.LENGTH_LONG
+        ).show()
+        if (sharedEmail != "" && sharedPass != "" && sharedEmail != null && sharedPass != null) {
+            fragmentTransaction =
+                (activity as MainActivity).supportFragmentManager.beginTransaction()
+            fragmentTransaction.apply {
+                this.add(R.id.main_activity, menuPageFragment, MENU_PAGE_FRAGMENT_TAG)
+                commit()
+            }
+        }
     }
 
     override fun onCreateView(
@@ -194,19 +193,19 @@ class AuthorizationFragment : Fragment() {
 
                     snackBarMake(getText(R.string.login_ok).toString())
 
-//                    sharedPreferences?.edit()?.putString(GET_EMAIL, login_Email)?.apply()
-//                    sharedPreferences?.edit()?.putString(GET_PASS, login_Pass)?.apply()
-
+                    sharedPreferences?.edit()?.putString(GET_EMAIL, login_Email)?.apply()
+                    sharedPreferences?.edit()?.putString(GET_PASS, login_Pass)?.apply()
+                    sharedPreferences?.edit()?.putString(GET_USERNAME, loginUsername)?.apply()
                     fragmentTransaction =
                         (activity as MainActivity).supportFragmentManager.beginTransaction()
                     fragmentTransaction.apply {
-                        this.replace(R.id.main_activity, gamePageFragment)
-                        this.remove(this@AuthorizationFragment)
+                        this.add(R.id.main_activity, menuPageFragment, MENU_PAGE_FRAGMENT_TAG)
                         commit()
                     }
                 }
 
                 .addOnFailureListener {
+                    @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
                     snackBarMake(getText(R.string.login_failed).toString(), it.message.toString())
                 }
 
