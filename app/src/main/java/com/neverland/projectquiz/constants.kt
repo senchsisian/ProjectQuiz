@@ -23,6 +23,7 @@ const val GET_USERNAME = "get username"
 const val GET_EMAIL = "get email"
 const val GET_PASS = "get pass"
 const val USERNAME = "username"
+const val AUTHORIZATION = "authorization"
 
 //input dialog fragment
 const val GET_EMAIL_INPUT_DIALOG = "email input dialog"

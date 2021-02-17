@@ -3,14 +3,12 @@ package com.neverland.projectquiz.autorizationandregister
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ProgressBar
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
@@ -20,7 +18,6 @@ import com.google.firebase.database.*
 import com.neverland.projectquiz.*
 import com.neverland.projectquiz.R
 import com.neverland.projectquiz.gamepackage.MenuPageFragment
-import com.neverland.projectquiz.gamepackage.StartPageFragment
 import com.neverland.projectquiz.models.User
 
 class AuthorizationFragment : Fragment() {
@@ -36,8 +33,7 @@ class AuthorizationFragment : Fragment() {
     private var isLogin: Boolean = false
     private var isRegister: Boolean = false
     private var menuPageFragment = MenuPageFragment()
-    private var sharedPreferences =
-        activity?.getSharedPreferences("authorization", Context.MODE_PRIVATE)
+    private lateinit var sharedPreferences :SharedPreferences
     private lateinit var fragmentTransaction: FragmentTransaction
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var db: FirebaseDatabase
@@ -49,19 +45,16 @@ class AuthorizationFragment : Fragment() {
         firebaseAuth = FirebaseAuth.getInstance()
         db = FirebaseDatabase.getInstance()
         users = db.getReference("Users")
-
-        val sharedEmail = sharedPreferences?.getString(GET_EMAIL, "")
-        val sharedPass = sharedPreferences?.getString(GET_PASS, "")
-        Toast.makeText(
-            activity,
-            "sharedEmail & sharedPass $sharedEmail $sharedPass",
-            Toast.LENGTH_LONG
-        ).show()
-        if (sharedEmail != "" && sharedPass != "" && sharedEmail != null && sharedPass != null) {
+         sharedPreferences=
+             context!!.getSharedPreferences(AUTHORIZATION, Context.MODE_PRIVATE)
+        val sharedEmail = sharedPreferences.getString(GET_EMAIL, "")
+        val sharedPass = sharedPreferences.getString(GET_PASS, "")
+        if(sharedPass!="" && sharedEmail!="" && sharedPass!=null){
             fragmentTransaction =
                 (activity as MainActivity).supportFragmentManager.beginTransaction()
             fragmentTransaction.apply {
                 this.add(R.id.main_activity, menuPageFragment, MENU_PAGE_FRAGMENT_TAG)
+                this.addToBackStack( null)
                 commit()
             }
         }
@@ -76,6 +69,8 @@ class AuthorizationFragment : Fragment() {
         btnSignIn = infVar.findViewById(R.id.btnSignIn)
         btnRegister = infVar.findViewById(R.id.btnRegister)
         progressBar = infVar.findViewById(R.id.getProgressBar)
+        progressBar!!.max=100
+        progressBar!!.progress=0
         return infVar
     }
 
@@ -95,7 +90,7 @@ class AuthorizationFragment : Fragment() {
         }
     }
 
-    override fun onResume() {  //Յուրա ջան, գրանցման և մուտքի համար onResume եմ օգտագործել, ճի՞շտ եմ արել։
+    override fun onResume() {
         super.onResume()
         //Իրականացվում է մուտքի վավերացման տվյալների ստացում
         loginEmail = arguments?.getString(GET_EMAIL_INPUT_DIALOG) ?: EMPTY
@@ -154,6 +149,9 @@ class AuthorizationFragment : Fragment() {
                     user.email = get_Email
                     user.pass = get_Pass
                     user.username = get_Username
+                    sharedPreferences.edit()?.putString(GET_USERNAME, get_Username)?.apply()
+                    sharedPreferences.edit()?.putString(GET_EMAIL, get_Email)?.apply()
+                    sharedPreferences.edit()?.putString(GET_PASS, get_Pass)?.apply()
 
                     users.child(firebaseAuth.currentUser!!.uid).setValue(user)
                         .addOnSuccessListener { snackBarMake(getText(R.string.register_ok).toString()) }
@@ -178,11 +176,14 @@ class AuthorizationFragment : Fragment() {
                     val valueEventListener = object : ValueEventListener {
                         override fun onDataChange(snapshot: DataSnapshot) {
                             for (dSnapshot in snapshot.children) {
+                                val getProgress=progressBar!!.progress
+                                progressBar!!.progress=getProgress+1
                                 val key: String = dSnapshot.key.toString()
                                 val value: String = dSnapshot.value.toString()
                                 if (key == USERNAME) loginUsername =
                                     value  //մուտքի ժամանակ ստանում ենք օգտվողի անունը
                             }
+                            sharedPreferences.edit()?.putString(GET_USERNAME, loginUsername)?.apply()
                         }
 
                         override fun onCancelled(error: DatabaseError) {
@@ -193,13 +194,14 @@ class AuthorizationFragment : Fragment() {
 
                     snackBarMake(getText(R.string.login_ok).toString())
 
-                    sharedPreferences?.edit()?.putString(GET_EMAIL, login_Email)?.apply()
-                    sharedPreferences?.edit()?.putString(GET_PASS, login_Pass)?.apply()
-                    sharedPreferences?.edit()?.putString(GET_USERNAME, loginUsername)?.apply()
+                    sharedPreferences.edit()?.putString(GET_EMAIL, login_Email)?.apply()
+                    sharedPreferences.edit()?.putString(GET_PASS, login_Pass)?.apply()
+
                     fragmentTransaction =
                         (activity as MainActivity).supportFragmentManager.beginTransaction()
                     fragmentTransaction.apply {
                         this.add(R.id.main_activity, menuPageFragment, MENU_PAGE_FRAGMENT_TAG)
+                        this.addToBackStack( null)
                         commit()
                     }
                 }

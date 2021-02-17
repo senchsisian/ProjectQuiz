@@ -2,13 +2,13 @@ package com.neverland.projectquiz.gamepackage
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.RadioButton
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.neverland.projectquiz.*
@@ -21,14 +21,14 @@ class StartPageFragment : Fragment() {
     private var checkedRadioId = ""
     private var gamePageFragment = GamePageFragment()
     private lateinit var fragmentTransaction: FragmentTransaction
-    private var sharedPreferences =
-        activity?.getSharedPreferences(PARTS_OF_GAME, Context.MODE_PRIVATE)
+    private lateinit var sharedPreferences :SharedPreferences
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val infLater = inflater.inflate(R.layout.fragment_start_page, container, false)
+        sharedPreferences=context!!.getSharedPreferences(PARTS_OF_GAME, Context.MODE_PRIVATE)
         initViews(infLater)
         return infLater
     }
@@ -43,14 +43,12 @@ class StartPageFragment : Fragment() {
                 secondPart?.isChecked == true -> ARSHAKUNIS_FAMILY
                 else -> ""
             }
-            Toast.makeText(activity, "checkedRadioId $checkedRadioId", Toast.LENGTH_SHORT).show()
-            sharedPreferences?.edit()?.putString(PARTS_OF_GAME, checkedRadioId)?.apply()
-            val getPart = sharedPreferences?.getString(PARTS_OF_GAME, "").toString()
-            Toast.makeText(activity, "getPart $getPart", Toast.LENGTH_SHORT).show()
+            sharedPreferences.edit()?.putString(PARTS_OF_GAME, checkedRadioId)?.apply()
             fragmentTransaction =
                 (activity as MainActivity).supportFragmentManager.beginTransaction()
             fragmentTransaction.apply {
                 this.add(R.id.main_activity, gamePageFragment, GAME_PAGE_FRAGMENT_TAG)
+                addToBackStack(null)
                 commit()
             }
         }

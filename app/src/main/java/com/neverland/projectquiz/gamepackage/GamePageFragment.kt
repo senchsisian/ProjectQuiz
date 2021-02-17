@@ -2,6 +2,7 @@ package com.neverland.projectquiz.gamepackage
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,12 +10,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
 import com.neverland.projectquiz.MainActivity
 import com.neverland.projectquiz.PARTS_OF_GAME
 import com.neverland.projectquiz.R
+import com.neverland.projectquiz.START_PAGE_FRAGMENT_TAG
 import com.neverland.projectquiz.database.DataModel
 import com.neverland.projectquiz.models.GamePageViewModel
 import com.neverland.projectquiz.models.TimerViewModel
@@ -30,9 +32,9 @@ open class GamePageFragment : Fragment() {
     private lateinit var timerText: TextView
     private lateinit var dataList: List<DataModel>
     private lateinit var gamePageViewModel: GamePageViewModel
-    private var sharedPreferences =
-        activity?.getSharedPreferences(PARTS_OF_GAME, Context.MODE_PRIVATE)
-
+    private lateinit var sharedPreferences:SharedPreferences
+    private val startPageFragment = StartPageFragment()
+    private lateinit var fragmentTransaction: FragmentTransaction
     private var indexOfData = 0
     private var backButton: TextView? = null
     private var answerRight = ""
@@ -46,9 +48,10 @@ open class GamePageFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         //Ստանում ենք Room-ից հարցերի լիստը և սկսում խաղը
-        val getPart = sharedPreferences?.getString(PARTS_OF_GAME, "").toString()
+        sharedPreferences =
+            context!!.getSharedPreferences(PARTS_OF_GAME, Context.MODE_PRIVATE)
+        val getPart = sharedPreferences.getString(PARTS_OF_GAME, "").toString()
         gamePageViewModel = ViewModelProvider(this).get(GamePageViewModel::class.java)
-        Toast.makeText(activity, "shared in GamePage $getPart", Toast.LENGTH_SHORT).show()
         context?.let {
             DataProviderRepo.setContextAndInitDb(it)
         }
@@ -104,10 +107,17 @@ open class GamePageFragment : Fragment() {
         }
     }
 
-    private fun showNextQuestion() {
+     fun showNextQuestion() {
         //իրականացվում է հարցերի հերթափոխում
         if (indexOfData >= dataList.size - 1) {
 
+            fragmentTransaction =
+                (activity as MainActivity).supportFragmentManager.beginTransaction()
+            fragmentTransaction.apply {
+                this.replace(R.id.main_activity, startPageFragment, START_PAGE_FRAGMENT_TAG)
+                addToBackStack(null)
+                commit()
+            }
         } else {
             updateViewsWithData(dataList[indexOfData])
             indexOfData++

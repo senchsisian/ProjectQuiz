@@ -4,6 +4,7 @@ import android.os.CountDownTimer
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.neverland.projectquiz.gamepackage.GamePageFragment
 
 class TimerViewModel : ViewModel() {
     private var _liveTimerInfo = MutableLiveData<Long>()
@@ -16,6 +17,9 @@ class TimerViewModel : ViewModel() {
         }
 
         override fun onFinish() {
+            val callGamePageFragment= GamePageFragment()
+            callGamePageFragment.showNextQuestion()
+            callGamePageFragment.timerView()
             Log.v("Timer log. ", "$liveTimerInfo")
         }
     }

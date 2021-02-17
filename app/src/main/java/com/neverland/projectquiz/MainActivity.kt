@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        supportActionBar?.hide()
         try {
             if (isOnline()) {
                 val dataFromFirebase = GetDataFromFirebase()
@@ -24,10 +24,9 @@ class MainActivity : AppCompatActivity() {
                 //Տեղափոխվում է նույնականացման էջ
                 supportFragmentManager.beginTransaction().apply {
                     this.add(R.id.main_activity, authorizationFragment, AUTHORIZATION_FRAGMENT_TAG)
+                    this.addToBackStack(null)
                     commit()
                 }
-            } else {
-                Toast.makeText(this, "Connection error", Toast.LENGTH_SHORT).show()
             }
         } catch (e: Exception) {
             Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show()
