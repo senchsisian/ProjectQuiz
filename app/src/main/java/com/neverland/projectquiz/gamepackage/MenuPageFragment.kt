@@ -40,7 +40,7 @@ class MenuPageFragment : Fragment() {
                 sharedPreferences.edit()?.putString(GET_PASS, "")?.apply()
                 sharedPreferences.edit()?.putString(GET_USERNAME, "")?.apply()
                 (activity as MainActivity).supportFragmentManager.beginTransaction().apply {
-                    this.add(R.id.main_activity, authorizationFragment, AUTHORIZATION_FRAGMENT_TAG)
+                    this.replace(R.id.main_activity, authorizationFragment, AUTHORIZATION_FRAGMENT_TAG)
                     this.addToBackStack(null)
                     commit()
                 }
