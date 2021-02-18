@@ -11,7 +11,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
 import com.neverland.projectquiz.MainActivity
 import com.neverland.projectquiz.PARTS_OF_GAME
@@ -33,8 +32,6 @@ open class GamePageFragment : Fragment() {
     private lateinit var dataList: List<DataModel>
     private lateinit var gamePageViewModel: GamePageViewModel
     private lateinit var sharedPreferences:SharedPreferences
-    private val startPageFragment = StartPageFragment()
-    private lateinit var fragmentTransaction: FragmentTransaction
     private var indexOfData = 0
     private var backButton: TextView? = null
     private var answerRight = ""
@@ -103,24 +100,31 @@ open class GamePageFragment : Fragment() {
         }
 
         backButton?.setOnClickListener {
-
+            val fragmentTransaction =
+                (activity as MainActivity).supportFragmentManager.beginTransaction()
+            fragmentTransaction.apply {
+                this.replace(R.id.main_activity, StartPageFragment(), START_PAGE_FRAGMENT_TAG)
+                addToBackStack(null)
+                commit()
+            }
         }
     }
 
-     fun showNextQuestion() {
+     private fun showNextQuestion() {
         //իրականացվում է հարցերի հերթափոխում
         if (indexOfData >= dataList.size - 1) {
 
-            fragmentTransaction =
+            val fragmentTransaction =
                 (activity as MainActivity).supportFragmentManager.beginTransaction()
             fragmentTransaction.apply {
-                this.replace(R.id.main_activity, startPageFragment, START_PAGE_FRAGMENT_TAG)
+                this.replace(R.id.main_activity, StartPageFragment(), START_PAGE_FRAGMENT_TAG)
                 addToBackStack(null)
                 commit()
             }
         } else {
             updateViewsWithData(dataList[indexOfData])
             indexOfData++
+            timerView()
         }
     }
 
@@ -166,7 +170,12 @@ open class GamePageFragment : Fragment() {
             getCurrentTimer =
                 it.toInt() //Մնացորդային ժամանակը ընդհանուր հաշվին է գումարվելու ճիշտ պատասխանի դեպքում
             timerText.text = "Մնաց 00:$digits"// պատկերում է ժամանակը
+
+            if(it==0L){
+               showNextQuestion()
+            }
         })
 
     }
+
 }

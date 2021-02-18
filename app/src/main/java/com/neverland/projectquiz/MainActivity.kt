@@ -11,7 +11,6 @@ import com.neverland.projectquiz.autorizationandregister.AuthorizationFragment
 import com.neverland.projectquiz.database.GetDataFromFirebase
 
 class MainActivity : AppCompatActivity() {
-    private var authorizationFragment = AuthorizationFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,9 +20,10 @@ class MainActivity : AppCompatActivity() {
             if (isOnline()) {
                 val dataFromFirebase = GetDataFromFirebase()
                 dataFromFirebase.getDataFromFirebase(this, KINGDOM_OF_VAN)
+                supportActionBar?.hide()
                 //Տեղափոխվում է նույնականացման էջ
                 supportFragmentManager.beginTransaction().apply {
-                    this.add(R.id.main_activity, authorizationFragment, AUTHORIZATION_FRAGMENT_TAG)
+                    this.add(R.id.main_activity, AuthorizationFragment(), AUTHORIZATION_FRAGMENT_TAG)
                     this.addToBackStack(null)
                     commit()
                 }

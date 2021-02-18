@@ -36,8 +36,8 @@
                 android:layout_width="248dp"
                 android:layout_height="248dp"
                 android:layout_margin="10dp"
-                android:layout_gravity="center"/>
-<!--                app:srcCompat="" />-->
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/ic_account_box" />
 
         </LinearLayout>
 

@@ -11,7 +11,6 @@ import android.widget.Button
 import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
@@ -32,9 +31,7 @@ class AuthorizationFragment : Fragment() {
     private var loginUsername: String = EMPTY
     private var isLogin: Boolean = false
     private var isRegister: Boolean = false
-    private var menuPageFragment = MenuPageFragment()
     private lateinit var sharedPreferences :SharedPreferences
-    private lateinit var fragmentTransaction: FragmentTransaction
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var db: FirebaseDatabase
     private lateinit var users: DatabaseReference
@@ -50,10 +47,9 @@ class AuthorizationFragment : Fragment() {
         val sharedEmail = sharedPreferences.getString(GET_EMAIL, "")
         val sharedPass = sharedPreferences.getString(GET_PASS, "")
         if(sharedPass!="" && sharedEmail!="" && sharedPass!=null){
-            fragmentTransaction =
-                (activity as MainActivity).supportFragmentManager.beginTransaction()
-            fragmentTransaction.apply {
-                this.add(R.id.main_activity, menuPageFragment, MENU_PAGE_FRAGMENT_TAG)
+            (activity as MainActivity).supportActionBar?.show()
+            (activity as MainActivity).supportFragmentManager.beginTransaction().apply {
+                this.add(R.id.main_activity,  MenuPageFragment(), MENU_PAGE_FRAGMENT_TAG)
                 this.addToBackStack( null)
                 commit()
             }
@@ -196,11 +192,9 @@ class AuthorizationFragment : Fragment() {
 
                     sharedPreferences.edit()?.putString(GET_EMAIL, login_Email)?.apply()
                     sharedPreferences.edit()?.putString(GET_PASS, login_Pass)?.apply()
-
-                    fragmentTransaction =
-                        (activity as MainActivity).supportFragmentManager.beginTransaction()
-                    fragmentTransaction.apply {
-                        this.add(R.id.main_activity, menuPageFragment, MENU_PAGE_FRAGMENT_TAG)
+                    (activity as MainActivity).supportActionBar?.show()
+                    (activity as MainActivity).supportFragmentManager.beginTransaction().apply {
+                        this.add(R.id.main_activity,  MenuPageFragment(), MENU_PAGE_FRAGMENT_TAG)
                         this.addToBackStack( null)
                         commit()
                     }

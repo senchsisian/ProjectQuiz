@@ -59,4 +59,8 @@
     <string name="some_user">some user</string>
     <string name="exit">Ելք</string>
     <string name="settings_for_menu">Կարգավորումներ</string>
+    <string name="bagratuni_family">Բագրատունիների ընտանիք</string>
+    <string name="arshakuni_family">Արշակունիների ընտանիք</string>
+    <string name="kingdom_of_van">Վանի Թագավորություն</string>
+    <string name="artashesyan_family">Արտաշեսյանների ընտանիք</string>
 </resources>
