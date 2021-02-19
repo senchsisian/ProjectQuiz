@@ -16,7 +16,9 @@ class StartPageFragment : Fragment() {
     private var firstPart: RadioButton? = null
     private var secondPart: RadioButton? = null
     private var thirdPart: RadioButton? = null
+    private var fourthPart: RadioButton? = null
     private var startButton: Button? = null
+    private var backButton: Button? = null
     private var checkedRadioId = ""
     private lateinit var sharedPreferences :SharedPreferences
 
@@ -32,12 +34,22 @@ class StartPageFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        backButton!!.setOnClickListener {
+            val fragmentTransaction =
+                (activity as MainActivity).supportFragmentManager.beginTransaction()
+            fragmentTransaction.apply {
+                this.replace(R.id.main_activity, MenuPageFragment(), MENU_PAGE_FRAGMENT_TAG)
+                addToBackStack(null)
+                commit()
+            }
+        }
 
         startButton!!.setOnClickListener {
             checkedRadioId = when {
                 firstPart?.isChecked == true -> KINGDOM_OF_VAN
-                thirdPart?.isChecked == true -> ARTASHESYANS_FAMILY
-                secondPart?.isChecked == true -> ARSHAKUNIS_FAMILY
+                secondPart?.isChecked == true -> ARTASHESYANS_FAMILY
+                thirdPart?.isChecked == true -> ARSHAKUNIS_FAMILY
+                secondPart?.isChecked == true -> BAGRATUNIS_FAMILY
                 else -> ""
             }
             sharedPreferences.edit()?.putString(PARTS_OF_GAME, checkedRadioId)?.apply()
@@ -56,7 +68,9 @@ class StartPageFragment : Fragment() {
         firstPart = view.findViewById(R.id.kingdom_of_van)
         secondPart = view.findViewById(R.id.artashesyan_family)
         thirdPart = view.findViewById(R.id.arshakuni_family)
+        fourthPart = view.findViewById(R.id.bagratuni_family)
         startButton = view.findViewById(R.id.start)
+        backButton = view.findViewById(R.id.start)
     }
 
 

@@ -157,7 +157,7 @@ open class GamePageFragment : Fragment() {
         answerFour = view.findViewById(R.id.answer_4)
         questionText = view.findViewById(R.id.questionText)
         timerText = view.findViewById(R.id.timer_text)
-        backButton = view.findViewById(R.id.backButton)
+        backButton = view.findViewById(R.id.backButton2)
         currentCount = view.findViewById(R.id.scoreText)
     }
 

@@ -17,6 +17,7 @@ const val DEBUG_TAG = "NetworkStatusExample"
 const val KINGDOM_OF_VAN = "KingdomOfVan"
 const val ARTASHESYANS_FAMILY = "Artashesyans"
 const val ARSHAKUNIS_FAMILY = "Arshakunis"
+const val BAGRATUNIS_FAMILY = "Bagratunis"
 const val PARTS_OF_GAME = "Parts o game"
 const val SCORES_OF_GAME = "Scores o game"
 
