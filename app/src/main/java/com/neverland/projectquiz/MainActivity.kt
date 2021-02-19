@@ -24,7 +24,6 @@ class MainActivity : AppCompatActivity() {
                 //Տեղափոխվում է նույնականացման էջ
                 supportFragmentManager.beginTransaction().apply {
                     this.add(R.id.main_activity, AuthorizationFragment(), AUTHORIZATION_FRAGMENT_TAG)
-                    this.addToBackStack(null)
                     commit()
                 }
             }

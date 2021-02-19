@@ -7,16 +7,18 @@ const val GAME_PAGE_FRAGMENT_TAG = "GAME PAGE FRAGMENT TAG"
 const val START_PAGE_FRAGMENT_TAG = "START PAGE FRAGMENT TAG"
 const val MENU_PAGE_FRAGMENT_TAG = "START PAGE FRAGMENT TAG"
 const val AUTHORIZATION_FRAGMENT_TAG = "AUTHORIZATION FRAGMENT TAG"
+const val RATING_FRAGMENT_TAG = "RATING FRAGMENT TAG"
 
 //main activity
 const val EMPTY = ""
 const val DEBUG_TAG = "NetworkStatusExample"
 
-//game parts name
+//game parts
 const val KINGDOM_OF_VAN = "KingdomOfVan"
 const val ARTASHESYANS_FAMILY = "Artashesyans"
 const val ARSHAKUNIS_FAMILY = "Arshakunis"
 const val PARTS_OF_GAME = "Parts o game"
+const val SCORES_OF_GAME = "Scores o game"
 
 //authorization fragment
 const val GET_USERNAME = "get username"

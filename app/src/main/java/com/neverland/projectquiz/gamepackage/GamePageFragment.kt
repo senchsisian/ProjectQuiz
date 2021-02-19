@@ -12,10 +12,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.neverland.projectquiz.MainActivity
-import com.neverland.projectquiz.PARTS_OF_GAME
-import com.neverland.projectquiz.R
-import com.neverland.projectquiz.START_PAGE_FRAGMENT_TAG
+import com.neverland.projectquiz.*
 import com.neverland.projectquiz.database.DataModel
 import com.neverland.projectquiz.models.GamePageViewModel
 import com.neverland.projectquiz.models.TimerViewModel
@@ -32,6 +29,7 @@ open class GamePageFragment : Fragment() {
     private lateinit var dataList: List<DataModel>
     private lateinit var gamePageViewModel: GamePageViewModel
     private lateinit var sharedPreferences:SharedPreferences
+    private lateinit var scoresPreferences:SharedPreferences
     private var indexOfData = 0
     private var backButton: TextView? = null
     private var answerRight = ""
@@ -47,6 +45,9 @@ open class GamePageFragment : Fragment() {
         //Ստանում ենք Room-ից հարցերի լիստը և սկսում խաղը
         sharedPreferences =
             context!!.getSharedPreferences(PARTS_OF_GAME, Context.MODE_PRIVATE)
+        scoresPreferences =
+            context!!.getSharedPreferences(SCORES_OF_GAME, Context.MODE_PRIVATE)
+
         val getPart = sharedPreferences.getString(PARTS_OF_GAME, "").toString()
         gamePageViewModel = ViewModelProvider(this).get(GamePageViewModel::class.java)
         context?.let {
@@ -113,11 +114,11 @@ open class GamePageFragment : Fragment() {
      private fun showNextQuestion() {
         //իրականացվում է հարցերի հերթափոխում
         if (indexOfData >= dataList.size - 1) {
-
+            scoresPreferences.edit()?.putString(SCORES_OF_GAME, currentCount.text.toString() )?.apply()
             val fragmentTransaction =
                 (activity as MainActivity).supportFragmentManager.beginTransaction()
             fragmentTransaction.apply {
-                this.replace(R.id.main_activity, StartPageFragment(), START_PAGE_FRAGMENT_TAG)
+                this.replace(R.id.main_activity, RatingFragment(), RATING_FRAGMENT_TAG)
                 addToBackStack(null)
                 commit()
             }

@@ -168,6 +168,7 @@ class AuthorizationFragment : Fragment() {
             firebaseAuth.signInWithEmailAndPassword(login_Email, login_Pass)
                 .addOnSuccessListener {
 
+                    (activity as MainActivity).supportActionBar?.show()
                     val progressRef = users.child(firebaseAuth.currentUser!!.uid)
                     val valueEventListener = object : ValueEventListener {
                         override fun onDataChange(snapshot: DataSnapshot) {
@@ -192,7 +193,6 @@ class AuthorizationFragment : Fragment() {
 
                     sharedPreferences.edit()?.putString(GET_EMAIL, login_Email)?.apply()
                     sharedPreferences.edit()?.putString(GET_PASS, login_Pass)?.apply()
-                    (activity as MainActivity).supportActionBar?.show()
                     (activity as MainActivity).supportFragmentManager.beginTransaction().apply {
                         this.add(R.id.main_activity,  MenuPageFragment(), MENU_PAGE_FRAGMENT_TAG)
                         this.addToBackStack( null)

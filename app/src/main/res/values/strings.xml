@@ -63,4 +63,7 @@
     <string name="arshakuni_family">Արշակունիների ընտանիք</string>
     <string name="kingdom_of_van">Վանի Թագավորություն</string>
     <string name="artashesyan_family">Արտաշեսյանների ընտանիք</string>
+    <string name="winning_text">Դուք վաստակել եք</string>
+    <string name="score_text">միավոր</string>
+    <string name="return_menu">Վերադառնալ մենյու</string>
 </resources>
