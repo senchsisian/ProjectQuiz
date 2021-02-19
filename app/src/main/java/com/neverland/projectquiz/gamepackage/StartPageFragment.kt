@@ -49,7 +49,7 @@ class StartPageFragment : Fragment() {
                 firstPart?.isChecked == true -> KINGDOM_OF_VAN
                 secondPart?.isChecked == true -> ARTASHESYANS_FAMILY
                 thirdPart?.isChecked == true -> ARSHAKUNIS_FAMILY
-                secondPart?.isChecked == true -> BAGRATUNIS_FAMILY
+                fourthPart?.isChecked == true -> BAGRATUNIS_FAMILY
                 else -> ""
             }
             sharedPreferences.edit()?.putString(PARTS_OF_GAME, checkedRadioId)?.apply()

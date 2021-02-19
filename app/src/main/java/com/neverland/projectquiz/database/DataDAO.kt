@@ -23,6 +23,9 @@ interface DataDAO {
 
     @Query("$SELECT_FROM $GET_DATA $WHERE_COLUMN\"$ARTASHESYANS_FAMILY\" $ORDER_BY")
     fun getArtashesyansData(): List<DataModel>
+
+    @Query("$SELECT_FROM $GET_DATA $WHERE_COLUMN\"$BAGRATUNIS_FAMILY\" $ORDER_BY")
+    fun getBagratunisData(): List<DataModel>
     //
 
     @Delete

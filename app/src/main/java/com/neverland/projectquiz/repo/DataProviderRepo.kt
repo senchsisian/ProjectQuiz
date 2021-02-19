@@ -22,6 +22,7 @@ object DataProviderRepo {
             KINGDOM_OF_VAN -> dataDB?.getDataDao()?.getKingdomOfVanData()
             ARSHAKUNIS_FAMILY -> dataDB?.getDataDao()?.getArshakunisData()
             ARTASHESYANS_FAMILY -> dataDB?.getDataDao()?.getArtashesyansData()
+            ARTASHESYANS_FAMILY -> dataDB?.getDataDao()?.getBagratunisData()
             else -> dataDB?.getDataDao()?.getKingdomOfVanData()
         }
         Log.v("Getting elements in game page", getDataList.toString())
