@@ -39,7 +39,6 @@ class MenuPageFragment : Fragment() {
                 (activity as MainActivity).supportActionBar?.hide()
                 (activity as MainActivity).supportFragmentManager.beginTransaction().apply {
                     this.replace(R.id.main_activity, AuthorizationFragment(), AUTHORIZATION_FRAGMENT_TAG)
-                    this.addToBackStack( null)
                     commit()
                 }
             }
@@ -70,7 +69,7 @@ class MenuPageFragment : Fragment() {
                 (activity as MainActivity).supportFragmentManager.beginTransaction()
             fragmentTransaction.apply {
                 this.add(R.id.main_activity, StartPageFragment(), START_PAGE_FRAGMENT_TAG)
-                addToBackStack(null)
+                this.addToBackStack( null)
                 commit()
             }
         }

@@ -50,7 +50,6 @@ class AuthorizationFragment : Fragment() {
             (activity as MainActivity).supportActionBar?.show()
             (activity as MainActivity).supportFragmentManager.beginTransaction().apply {
                 this.add(R.id.main_activity,  MenuPageFragment(), MENU_PAGE_FRAGMENT_TAG)
-                this.addToBackStack( null)
                 commit()
             }
         }
@@ -193,9 +192,9 @@ class AuthorizationFragment : Fragment() {
 
                     sharedPreferences.edit()?.putString(GET_EMAIL, login_Email)?.apply()
                     sharedPreferences.edit()?.putString(GET_PASS, login_Pass)?.apply()
+                    (activity as MainActivity).supportActionBar?.show()
                     (activity as MainActivity).supportFragmentManager.beginTransaction().apply {
                         this.add(R.id.main_activity,  MenuPageFragment(), MENU_PAGE_FRAGMENT_TAG)
-                        this.addToBackStack( null)
                         commit()
                     }
                 }

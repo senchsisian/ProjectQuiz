@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.RadioButton
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.neverland.projectquiz.*
 
@@ -18,7 +19,7 @@ class StartPageFragment : Fragment() {
     private var thirdPart: RadioButton? = null
     private var fourthPart: RadioButton? = null
     private var startButton: Button? = null
-    private var backButton: Button? = null
+    private var backButton: TextView? = null
     private var checkedRadioId = ""
     private lateinit var sharedPreferences :SharedPreferences
 
@@ -34,12 +35,13 @@ class StartPageFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         backButton!!.setOnClickListener {
+            (activity as MainActivity).supportActionBar?.show()
             val fragmentTransaction =
                 (activity as MainActivity).supportFragmentManager.beginTransaction()
             fragmentTransaction.apply {
                 this.replace(R.id.main_activity, MenuPageFragment(), MENU_PAGE_FRAGMENT_TAG)
-                addToBackStack(null)
                 commit()
             }
         }
@@ -57,7 +59,6 @@ class StartPageFragment : Fragment() {
                 (activity as MainActivity).supportFragmentManager.beginTransaction()
             fragmentTransaction.apply {
                 this.add(R.id.main_activity, GamePageFragment(), GAME_PAGE_FRAGMENT_TAG)
-                addToBackStack(null)
                 commit()
             }
         }
@@ -70,7 +71,7 @@ class StartPageFragment : Fragment() {
         thirdPart = view.findViewById(R.id.arshakuni_family)
         fourthPart = view.findViewById(R.id.bagratuni_family)
         startButton = view.findViewById(R.id.start)
-        backButton = view.findViewById(R.id.start)
+        backButton = view.findViewById(R.id.backButton)
     }
 
 

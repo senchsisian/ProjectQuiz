@@ -29,8 +29,9 @@
                 android:fontFamily="@font/calligraffitti"
                 android:text="@string/armenian_quiz"
                 android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textSize="35sp" />
+                android:textColor="@color/sign_in_stroke"
+                android:textSize="35sp"
+                android:textStyle="bold"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -38,7 +39,7 @@
                 android:layout_marginTop="25dp"
                 android:text="@string/smart_game"
                 android:textAlignment="center"
-                android:textColor="@color/white"
+                android:textColor="@color/sign_in_stroke"
                 android:textSize="25sp" />
 
             <ImageView
@@ -46,7 +47,8 @@
                 android:layout_width="225dp"
                 android:layout_height="282dp"
                 android:layout_margin="25dp"
-                app:srcCompat="@drawable/main_apricot" />
+                app:srcCompat="@drawable/main_apricot"
+                android:textStyle="bold" />
         </LinearLayout>
 
         <ProgressBar

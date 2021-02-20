@@ -58,6 +58,7 @@ open class GamePageFragment : Fragment() {
             Log.d("getElement", "value posted: $dataModels")
             dataList = dataModels
             showNextQuestion()
+            timerView()
         })
         return inflater.inflate(R.layout.fragment_game_page, container, false)
     }
@@ -66,14 +67,12 @@ open class GamePageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViews(view)
-        timerView()
         answerOne.setOnClickListener {
             if (rightAnswerButtonNumber == 1) {
                 countOfRightAnswers += getCurrentTimer
                 currentCount.text = countOfRightAnswers.toString()
             }
             showNextQuestion()
-            timerView()
         }
         answerTwo.setOnClickListener {
             if (rightAnswerButtonNumber == 2) {
@@ -81,7 +80,6 @@ open class GamePageFragment : Fragment() {
                 currentCount.text = countOfRightAnswers.toString()
             }
             showNextQuestion()
-            timerView()
         }
         answerThree.setOnClickListener {
             if (rightAnswerButtonNumber == 3) {
@@ -89,7 +87,6 @@ open class GamePageFragment : Fragment() {
                 currentCount.text = countOfRightAnswers.toString()
             }
             showNextQuestion()
-            timerView()
         }
         answerFour.setOnClickListener {
             if (rightAnswerButtonNumber == 4) {
@@ -97,15 +94,14 @@ open class GamePageFragment : Fragment() {
                 currentCount.text = countOfRightAnswers.toString()
             }
             showNextQuestion()
-            timerView()
         }
 
         backButton?.setOnClickListener {
+            scoresPreferences.edit()?.putString(SCORES_OF_GAME, currentCount.text.toString() )?.apply()
             val fragmentTransaction =
                 (activity as MainActivity).supportFragmentManager.beginTransaction()
             fragmentTransaction.apply {
                 this.replace(R.id.main_activity, StartPageFragment(), START_PAGE_FRAGMENT_TAG)
-                addToBackStack(null)
                 commit()
             }
         }
@@ -119,7 +115,6 @@ open class GamePageFragment : Fragment() {
                 (activity as MainActivity).supportFragmentManager.beginTransaction()
             fragmentTransaction.apply {
                 this.replace(R.id.main_activity, RatingFragment(), RATING_FRAGMENT_TAG)
-                addToBackStack(null)
                 commit()
             }
         } else {
@@ -167,10 +162,12 @@ open class GamePageFragment : Fragment() {
         val timerViewModel = ViewModelProvider(this).get(TimerViewModel::class.java)
         timerViewModel.start()
         timerViewModel.liveTimerInfo.observe(viewLifecycleOwner, {
-            val digits: String = if (it < 10L) "0$it" else it.toString()
+            val minutes:String=if((it/60)<10L) "0${it/60}" else (it/60).toString()
+            val digits=it-(it/60).toInt()*60L
+            val seconds: String = if (digits < 10L) "0$digits" else digits.toString()
             getCurrentTimer =
                 it.toInt() //Մնացորդային ժամանակը ընդհանուր հաշվին է գումարվելու ճիշտ պատասխանի դեպքում
-            timerText.text = "Մնաց 00:$digits"// պատկերում է ժամանակը
+            timerText.text = "Մնաց $minutes:$seconds"// պատկերում է ժամանակը
 
             if(it==0L){
                showNextQuestion()

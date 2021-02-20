@@ -15,6 +15,7 @@ import com.neverland.projectquiz.MENU_PAGE_FRAGMENT_TAG
 import com.neverland.projectquiz.MainActivity
 import com.neverland.projectquiz.R
 import com.neverland.projectquiz.SCORES_OF_GAME
+import org.w3c.dom.Text
 
 class RatingFragment : Fragment() {
 
@@ -47,15 +48,20 @@ class RatingFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val returnButton =view.findViewById<Button>(R.id.return_menu)
-        returnButton.setOnClickListener {
-            val fragmentTransaction =
-                (activity as MainActivity).supportFragmentManager.beginTransaction()
-            fragmentTransaction.apply {
-                this.replace(R.id.main_activity, MenuPageFragment(), MENU_PAGE_FRAGMENT_TAG)
-                addToBackStack(null)
-                commit()
-            }
+        view.findViewById<Button>(R.id.return_menu).setOnClickListener {
+            closeFragment()
+        }
+        view.findViewById<TextView>(R.id.close_fragment).setOnClickListener {
+            closeFragment()
+        }
+    }
+    private fun closeFragment(){
+        scoresPreferences.edit()?.putString(SCORES_OF_GAME, "0")?.apply()
+        val fragmentTransaction =
+            (activity as MainActivity).supportFragmentManager.beginTransaction()
+        fragmentTransaction.apply {
+            this.replace(R.id.main_activity, MenuPageFragment(), MENU_PAGE_FRAGMENT_TAG)
+            commit()
         }
     }
 }

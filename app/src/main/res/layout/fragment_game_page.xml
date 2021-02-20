@@ -21,32 +21,34 @@
             android:layout_marginTop="35dp"
             android:layout_weight="1"
             android:orientation="vertical"
-            android:paddingHorizontal="15dp"
+            android:paddingHorizontal="10dp"
             android:gravity="center">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginVertical="10dp">
 
                 <TextView
                     android:id="@+id/backButton2"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:gravity="center_vertical"
-                    android:textColor="@color/white"
+                    android:textColor="@color/sign_in_stroke"
                     android:textSize="35sp"
                     android:textStyle="bold"
                     android:background="@drawable/ic_back"/>
 
                 <TextView
                     android:id="@+id/current_count"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:paddingHorizontal="10dp"
+                    android:gravity="center"
+                    android:paddingHorizontal="5dp"
+                    android:layout_weight="2"
                     android:text="@string/current_count"
-                    android:textColor="@color/white"
+                    android:textColor="@color/sign_in_stroke"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
@@ -54,20 +56,10 @@
                     android:id="@+id/scoreText"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:gravity="center_vertical|center"
+                    android:gravity="center_vertical"
                     android:text="@string/_0"
-                    android:textColor="@color/white"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/timer_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:paddingHorizontal="10dp"
-                    android:text="@string/_00_00"
-                    android:textColor="@color/white"
+                    android:layout_weight="1"
+                    android:textColor="@color/sign_in_stroke"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
@@ -75,13 +67,24 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/timer_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingHorizontal="5dp"
+                android:text="@string/_00_00"
+                android:textColor="@color/sign_in_stroke"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
                 android:id="@+id/questionText"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:gravity="center_horizontal"
+                android:gravity="center_vertical"
                 android:text="@string/question"
-                android:textColor="@color/white"
+                android:textColor="@color/sign_in_stroke"
                 android:textSize="30sp"
                 android:textStyle="bold"/>
 

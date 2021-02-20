@@ -15,7 +15,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        supportActionBar?.hide()
         try {
             if (isOnline()) {
                 val dataFromFirebase = GetDataFromFirebase()
@@ -23,7 +22,11 @@ class MainActivity : AppCompatActivity() {
                 supportActionBar?.hide()
                 //Տեղափոխվում է նույնականացման էջ
                 supportFragmentManager.beginTransaction().apply {
-                    this.add(R.id.main_activity, AuthorizationFragment(), AUTHORIZATION_FRAGMENT_TAG)
+                    this.add(
+                        R.id.main_activity,
+                        AuthorizationFragment(),
+                        AUTHORIZATION_FRAGMENT_TAG
+                    )
                     commit()
                 }
             }
@@ -39,6 +42,9 @@ class MainActivity : AppCompatActivity() {
         val isConnected = (networkInfo?.isConnected == true)
         Log.d(DEBUG_TAG, "$CONNECTIVITY_SERVICE: $isConnected")
         return isConnected
+    }
+
+    override fun onBackPressed() {
     }
 
 }
