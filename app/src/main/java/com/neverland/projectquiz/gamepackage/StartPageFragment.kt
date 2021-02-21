@@ -55,12 +55,9 @@ class StartPageFragment : Fragment() {
                 else -> ""
             }
             sharedPreferences.edit()?.putString(PARTS_OF_GAME, checkedRadioId)?.apply()
-            val fragmentTransaction =
-                (activity as MainActivity).supportFragmentManager.beginTransaction()
-            fragmentTransaction.apply {
-                this.add(R.id.main_activity, GamePageFragment(), GAME_PAGE_FRAGMENT_TAG)
-                commit()
-            }
+            val manager = (activity as MainActivity).supportFragmentManager
+            val getFragment=OpeningGameDialogFragment()
+            getFragment.show(manager, OPENING_GAME_DIALOG_FRAGMENT_TAG)
         }
     }
 

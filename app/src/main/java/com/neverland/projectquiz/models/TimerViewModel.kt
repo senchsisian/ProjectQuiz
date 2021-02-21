@@ -11,7 +11,6 @@ class TimerViewModel : ViewModel() {
     private var timer = object : CountDownTimer(secondsCount * 1000, 1000) {
         override fun onTick(millisUntilFinished: Long) {
             liveTimerInfo.postValue(millisUntilFinished / 1000)
-
         }
 
         override fun onFinish() {
