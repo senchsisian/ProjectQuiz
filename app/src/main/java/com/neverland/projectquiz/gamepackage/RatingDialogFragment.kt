@@ -11,19 +11,40 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
-import com.neverland.projectquiz.MainActivity
-import com.neverland.projectquiz.R
-import com.neverland.projectquiz.SCORES_OF_GAME
+import com.neverland.projectquiz.*
 
 class RatingDialogFragment : AppCompatDialogFragment() {
 
     private lateinit var scoresPreferences: SharedPreferences
-    private var rattingScore = ""
+    private lateinit var partsPreferences: SharedPreferences
+    private lateinit var sharedPreferences: SharedPreferences
+    private var rattingScore = 0
+    private var getPart = ""
+    private var sharedUsername = ""
+    private var mainScore=0
+    private var partScore=0
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        //Ստանում է վերջին խաղի անցանումը
+        partsPreferences =
+            context!!.getSharedPreferences(PARTS_OF_GAME, Context.MODE_PRIVATE)
+        getPart=partsPreferences.getString(PARTS_OF_GAME, "").toString()
+        //Ստանում է խաղացողի օգտանունը
+        sharedPreferences =
+            context!!.getSharedPreferences(GET_USERNAME, Context.MODE_PRIVATE)
+        sharedUsername = sharedPreferences.getString(GET_USERNAME, "").toString()
+        //ստանում է խաղացողի տվյալ խաղի մաքսիմալ միավորը և ընդհանուն միավորը
         scoresPreferences =
             context!!.getSharedPreferences(SCORES_OF_GAME, Context.MODE_PRIVATE)
-        rattingScore = scoresPreferences.getString(SCORES_OF_GAME, "").toString()
+        rattingScore = scoresPreferences.getInt(SCORES_OF_GAME, 0)
+        partScore=scoresPreferences.getInt("$sharedUsername $getPart ", 0)
+        mainScore=scoresPreferences.getInt(sharedUsername,0)
+        //մաքսիմալ միավորը համեմատում է խաղի ընթացիկ միավորի հետ
+        partScore=if(rattingScore>partScore) rattingScore else partScore
+        scoresPreferences.edit()?.putInt("$sharedUsername $getPart ", partScore)?.apply()
+        //ընդհանուր միավորը գումարում է խաղի ընթացիկ միավորին
+        mainScore += rattingScore
+        scoresPreferences.edit()?.putInt(sharedUsername, mainScore)?.apply()
 
         return activity?.let {
             val builder = AlertDialog.Builder(it)
@@ -46,12 +67,12 @@ class RatingDialogFragment : AppCompatDialogFragment() {
         val gettingScores = view.findViewById<TextView>(R.id.test_of_part)
         val ratingStars = view.findViewById<ImageView>(R.id.picture_of_part)
         val getId = when {
-            rattingScore.toInt() >= 100 -> R.drawable.rating_three_stars
-            rattingScore.toInt() >= 50 -> R.drawable.rating_two_stars
-            rattingScore.toInt() > 0 -> R.drawable.rating_star
+            rattingScore>= 100 -> R.drawable.rating_three_stars
+            rattingScore >= 50 -> R.drawable.rating_two_stars
+            rattingScore > 0 -> R.drawable.rating_star
             else -> R.drawable.sad_smile
         }
         ratingStars.setImageDrawable(getDrawable(requireContext(), getId))
-        gettingScores.text = rattingScore
+        gettingScores.text = rattingScore.toString()
     }
 }

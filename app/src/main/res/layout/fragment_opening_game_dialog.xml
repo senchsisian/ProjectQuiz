@@ -18,7 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="240dp"
             android:layout_margin="10dp"
-            app:srcCompat="@drawable/urartu" />
+            app:srcCompat="@drawable/example" />
 
         <TextView
             android:id="@+id/test_of_part"
@@ -26,7 +26,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:paddingHorizontal="5dp"
-            android:text="@string/text_kingdom_Of_van"
+            android:text="@string/example_text"
             android:textColor="@color/sign_in_stroke"
             android:textSize="12sp"
             android:textStyle="bold" />

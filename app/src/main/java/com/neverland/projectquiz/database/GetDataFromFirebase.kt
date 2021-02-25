@@ -19,7 +19,7 @@ class GetDataFromFirebase {
     private var dataMutable = mutableListOf<DataModel>()
     private var getElement = DataModel(Random.nextInt(), "", 0, "", "", "", "", "", "")
 
-    fun getDataFromFirebase(context: Context, column: String) {
+    fun getDataFromFirebase(context: Context) {
         //մաքրում է SQLLite DataBase
         dataDB = Room.databaseBuilder(context, DataDB::class.java, GET_DATA).build()
         GlobalScope.launch(Dispatchers.IO) {
@@ -36,25 +36,28 @@ class GetDataFromFirebase {
         val valueEventListenerQuiz = object : ValueEventListener {
             //շտեմարանից ստանում է վիկտորինայի հարցն ու պատասխանները
             override fun onDataChange(snapshot: DataSnapshot) {
-                for (dSnapshot in snapshot.children) {
-                    val key: Int = dSnapshot.key!!.toInt()
-                    for (dS in dSnapshot.children) {
-                        val key1: String = dS.key.toString()
-                        val value: String = dS.value.toString()
-                        getElement.column = column
-                        when (key1) {
-                            ANSWER_1 -> getElement.answer1 = value
-                            ANSWER_2 -> getElement.answer2 = value
-                            ANSWER_3 -> getElement.answer3 = value
-                            ANSWER_4 -> getElement.answer4 = value
-                            ANSWER_RIGHT -> getElement.answerRight = value
-                            QUESTION -> getElement.question = value
+                for (bSnapshot in snapshot.children) {
+                    val column:String = bSnapshot.key.toString()
+                    for (dSnapshot in bSnapshot.children) {
+                        val key: Int = dSnapshot.key!!.toInt()
+                        for (dS in dSnapshot.children) {
+                            val key1: String = dS.key.toString()
+                            val value: String = dS.value.toString()
+                            when (key1) {
+                                ANSWER_1 -> getElement.answer1 = value
+                                ANSWER_2 -> getElement.answer2 = value
+                                ANSWER_3 -> getElement.answer3 = value
+                                ANSWER_4 -> getElement.answer4 = value
+                                ANSWER_RIGHT -> getElement.answerRight = value
+                                QUESTION -> getElement.question = value
+                            }
                         }
+                        getElement.column = column
+                        getElement.id = key
+                        getElement.idKey = Random.nextInt()
+                        dataMutable.add(getElement)
+                        getElement = DataModel(Random.nextInt(), "", 0, "", "", "", "", "", "")
                     }
-                    getElement.id = key
-                    getElement.idKey = Random.nextInt()
-                    dataMutable.add(getElement)
-                    getElement = DataModel(Random.nextInt(), "", 0, "", "", "", "", "", "")
                 }
                 val sizeData = dataMutable.size
                 if (sizeData > 0) for (i in 0 until sizeData) {
@@ -70,7 +73,7 @@ class GetDataFromFirebase {
         }
 
         //իրականցվում է շտեմարանից տվյալների ստացում
-        val quizKingdomVan = quiz.child(HISTORY).child(column)
+        val quizKingdomVan = quiz.child(HISTORY)
         quizKingdomVan.addValueEventListener(valueEventListenerQuiz)
     }
 }

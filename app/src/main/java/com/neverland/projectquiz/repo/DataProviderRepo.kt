@@ -16,11 +16,13 @@ object DataProviderRepo {
 
     fun getDataFromDB(column: String): List<DataModel>? {
         val getDataList = when (column) {
+            FACTS_OF_HISTORY-> dataDB?.getDataDao()?.getFactsOfHistoryData()
             KINGDOM_OF_VAN -> dataDB?.getDataDao()?.getKingdomOfVanData()
+            YERVANDUNIS_FAMILY -> dataDB?.getDataDao()?.getYervandunisData()
             ARSHAKUNIS_FAMILY -> dataDB?.getDataDao()?.getArshakunisData()
             ARTASHESYANS_FAMILY -> dataDB?.getDataDao()?.getArtashesyansData()
             BAGRATUNIS_FAMILY -> dataDB?.getDataDao()?.getBagratunisData()
-            else -> dataDB?.getDataDao()?.getKingdomOfVanData()
+            else -> dataDB?.getDataDao()?.getFactsOfHistoryData()
         }
         Log.v("Getting elements in game page", getDataList.toString())
         return getDataList

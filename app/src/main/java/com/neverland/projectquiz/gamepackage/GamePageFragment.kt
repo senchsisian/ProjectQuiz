@@ -101,7 +101,6 @@ import com.neverland.projectquiz.repo.DataProviderRepo
         }
 
         backButton?.setOnClickListener {
-            scoresPreferences.edit()?.putString(SCORES_OF_GAME, currentCount.text.toString() )?.apply()
             val fragmentTransaction =
                 (activity as MainActivity).supportFragmentManager.beginTransaction()
             fragmentTransaction.apply {
@@ -113,9 +112,9 @@ import com.neverland.projectquiz.repo.DataProviderRepo
 
     private fun showNextQuestion() {
         //իրականացվում է հարցերի հերթափոխում
-        if (indexOfData >= dataList.size - 1) {
+        if (indexOfData >= dataList.size) {
             //ձևավորում է խաղի ավարտը
-            scoresPreferences.edit()?.putString(SCORES_OF_GAME, currentCount.text.toString() )?.apply()
+            scoresPreferences.edit()?.putInt(SCORES_OF_GAME, currentCount.text.toString().toInt() )?.apply()
 
 //            Տեղափոխվում է մենյու
             (activity as MainActivity).supportActionBar?.show()

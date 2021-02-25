@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
         try {
             if (isOnline()) {
                 val dataFromFirebase = GetDataFromFirebase()
-                dataFromFirebase.getDataFromFirebase(this, KINGDOM_OF_VAN)
+                dataFromFirebase.getDataFromFirebase(this)
                 supportActionBar?.hide()
                 //Տեղափոխվում է նույնականացման էջ
                 supportFragmentManager.beginTransaction().apply {

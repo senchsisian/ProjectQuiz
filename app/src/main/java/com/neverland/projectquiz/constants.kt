@@ -1,5 +1,8 @@
 package com.neverland.projectquiz
 
+//DATA DB version
+const val DATABASE_VERSION = 9
+
 //fragments Tags
 const val REGISTER_DIALOG_FRAGMENT_TAG = "REGISTER DIALOG FRAGMENT"
 const val INPUT_DIALOG_FRAGMENT_TAG = "INPUT DIALOG FRAGMENT"
@@ -15,10 +18,12 @@ const val EMPTY = ""
 const val DEBUG_TAG = "NetworkStatusExample"
 
 //game parts
+const val FACTS_OF_HISTORY = "FactsOfHistory"
 const val KINGDOM_OF_VAN = "KingdomOfVan"
-const val ARTASHESYANS_FAMILY = "Artashesyans"
-const val ARSHAKUNIS_FAMILY = "Arshakunis"
-const val BAGRATUNIS_FAMILY = "Bagratunis"
+const val YERVANDUNIS_FAMILY = "KingdomOfYervandunis"
+const val ARTASHESYANS_FAMILY = "KingdomOfArtashesyan"
+const val ARSHAKUNIS_FAMILY = "KingdomOfArshakunis"
+const val BAGRATUNIS_FAMILY = "KingdomOfBagratunis"
 const val PARTS_OF_GAME = "Parts o game"
 const val SCORES_OF_GAME = "Scores o game"
 
@@ -45,9 +50,6 @@ const val SELECT_FROM = "SELECT * FROM"
 const val WHERE_COLUMN = "WHERE column="
 const val ORDER_BY = "ORDER BY ID"
 const val DELETE_FROM = "DELETE FROM"
-
-//DATA DB version
-const val DATABASE_VERSION = 7
 
 //DATA MODEL
 const val GET_DATA = "firebase_data"

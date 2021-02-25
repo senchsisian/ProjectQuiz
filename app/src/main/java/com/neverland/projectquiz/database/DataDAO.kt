@@ -15,8 +15,14 @@ interface DataDAO {
     fun getAllData(): List<DataModel>
 
     //irakanacnum e tvyalneri kardacum yst vikrotinayi bajinneri
+    @Query("$SELECT_FROM $GET_DATA $WHERE_COLUMN\"$FACTS_OF_HISTORY\" $ORDER_BY")
+    fun getFactsOfHistoryData(): List<DataModel>
+
     @Query("$SELECT_FROM $GET_DATA $WHERE_COLUMN\"$KINGDOM_OF_VAN\" $ORDER_BY")
     fun getKingdomOfVanData(): List<DataModel>
+
+    @Query("$SELECT_FROM $GET_DATA $WHERE_COLUMN\"$YERVANDUNIS_FAMILY\" $ORDER_BY")
+    fun getYervandunisData(): List<DataModel>
 
     @Query("$SELECT_FROM $GET_DATA $WHERE_COLUMN\"$ARSHAKUNIS_FAMILY\" $ORDER_BY")
     fun getArshakunisData(): List<DataModel>

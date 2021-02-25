@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:gravity="center|center_horizontal"
+        android:gravity="center_horizontal"
         >
 
         <LinearLayout
@@ -43,17 +43,32 @@
                 android:textColor="@color/sign_in_stroke"
                 android:textSize="30sp"
                 android:textStyle="bold" />
+
         </LinearLayout>
 
-        <ScrollView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="10">
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-            <LinearLayout
+            <RadioGroup
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="match_parent">
+
+                <RadioButton
+                    android:id="@+id/facts_of_history"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/btn_sign_in"
+                    android:checked="true"
+                    android:text="@string/facts_of_history"
+                    android:textAlignment="textStart"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="23sp"
+                    android:textStyle="bold" />
 
                 <RadioButton
                     android:id="@+id/kingdom_of_van"
@@ -61,13 +76,26 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:background="@drawable/btn_sign_in"
-                    android:checked="true"
-                    android:paddingStart="5dp"
+                    android:enabled="false"
                     android:text="@string/kingdom_of_van"
                     android:textAlignment="textStart"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
-                    android:textSize="20sp"
+                    android:textSize="23sp"
+                    android:textStyle="bold" />
+
+                <RadioButton
+                    android:id="@+id/yervanduni_family"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/btn_sign_in"
+                    android:enabled="false"
+                    android:text="@string/yervanduni_family"
+                    android:textAlignment="textStart"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="23sp"
                     android:textStyle="bold" />
 
                 <RadioButton
@@ -77,12 +105,11 @@
                     android:layout_margin="10dp"
                     android:background="@drawable/btn_sign_in"
                     android:enabled="false"
-                    android:paddingStart="5dp"
                     android:text="@string/artashesyan_family"
                     android:textAlignment="textStart"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
-                    android:textSize="20sp"
+                    android:textSize="23sp"
                     android:textStyle="bold" />
 
                 <RadioButton
@@ -92,12 +119,11 @@
                     android:layout_margin="10dp"
                     android:background="@drawable/btn_sign_in"
                     android:enabled="false"
-                    android:paddingStart="5dp"
                     android:text="@string/arshakuni_family"
                     android:textAlignment="textStart"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
-                    android:textSize="20sp"
+                    android:textSize="23sp"
                     android:textStyle="bold" />
 
                 <RadioButton
@@ -107,28 +133,28 @@
                     android:layout_margin="10dp"
                     android:background="@drawable/btn_sign_in"
                     android:enabled="false"
-                    android:paddingStart="5dp"
                     android:text="@string/bagratuni_family"
                     android:textAlignment="textStart"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
-                    android:textSize="20sp"
+                    android:textSize="23sp"
                     android:textStyle="bold" />
+            </RadioGroup>
 
-            </LinearLayout>
-        </ScrollView>
+        </LinearLayout>
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/start"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_margin="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="25dp"
+            android:padding="10dp"
             android:background="@drawable/btn_sign_in"
             android:text="@string/start"
             android:textColor="@color/white"
-            android:textSize="20sp"
+            android:textSize="30sp"
             android:textStyle="bold"
-            android:layout_weight="1"/>
+            />
 
     </LinearLayout>
 </FrameLayout>
