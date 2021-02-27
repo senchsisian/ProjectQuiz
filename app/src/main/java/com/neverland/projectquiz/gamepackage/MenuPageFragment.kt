@@ -73,6 +73,17 @@ class MenuPageFragment : Fragment() {
                 commit()
             }
         }
+        pointsOfGame!!.setOnClickListener {
+            //խաղալ կոճակի հրահանգը
+            (activity as MainActivity).supportActionBar?.hide()
+            val fragmentTransaction =
+                (activity as MainActivity).supportFragmentManager.beginTransaction()
+            fragmentTransaction.apply {
+                this.add(R.id.main_activity, AllRatingsPageFragment(), ALL_RATING_PAGE_FRAGMENT_TAG)
+                this.addToBackStack( null)
+                commit()
+            }
+        }
 
 
     }

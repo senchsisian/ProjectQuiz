@@ -1,8 +1,8 @@
 <resources>
 
-    <string name="activity_error">Activity cannot be null</string>
-    <string name="app_name">Project Quiz</string>
-    <string name="armenian_quiz">Armenian Quiz</string>
+    <string name="activity_error">Պատուհանը չի կարող անորոշ լինել</string>
+    <string name="app_name">Հայկական վիկտորինա</string>
+    <string name="armenian_quiz">Հայոց պատմություն</string>
     <string name="smart_game">Smart Game</string>
     <string name="users">Users</string>
 
@@ -43,7 +43,7 @@
     <string name="points_of_game">Միավորներ</string>
     <string name="play_text">Խաղալ</string>
     <string name="change_avatar">Փոխել ավատարը</string>
-    <string name="some_user">some user</string>
+    <string name="some_user">Խաղացող</string>
     <string name="exit">Ելք</string>
 
     <string name="settings_for_menu">Կարգավորումներ</string>
@@ -57,10 +57,22 @@
 
     <string name="winning_text">Դուք վաստակել եք</string>
     <string name="_0">0</string>
+    <string name="_1">1</string>
+    <string name="_2">2</string>
+    <string name="_3">3</string>
+    <string name="_4">4</string>
+    <string name="_5">5</string>
+    <string name="_6">6</string>
+    <string name="_7">-</string>
     <string name="score_text">միավոր</string>
 
     <string name="return_menu">Վերադառնալ մենյու</string>
     <string name="close">Փակել</string>
     <string name="finished">Անցած</string>
     <string name="facts_of_history">Հայկական լեռնաշխարհ</string>
+    <string name="_0_100">0/100</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="PLayers_rating_tabel">Խաղացողի միավորների ցանկը</string>
+    <string name="total_rating">Ընդամենը</string>
 </resources>

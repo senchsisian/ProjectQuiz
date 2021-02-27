@@ -54,7 +54,10 @@ class OpeningGameDialogFragment : AppCompatDialogFragment() {
             inputWindow.findViewById<TextView>(R.id.test_of_part).setText(getText)
 
             builder.setView(inputWindow)
-                .setNegativeButton(getText(R.string.start)) { _, _ ->
+                .setNegativeButton(getText(R.string.cancel)) { _, _ ->
+                    this.dialog?.dismiss()
+                }
+                .setPositiveButton(getText(R.string.start)) { _, _ ->
                     (activity as MainActivity).supportFragmentManager.beginTransaction().apply {
                         this.add(R.id.main_activity, GamePageFragment(), GAME_PAGE_FRAGMENT_TAG)
                         commit()

@@ -81,6 +81,7 @@ class RegisterDialogFragment : AppCompatDialogFragment() {
                             requireFragmentManager().findFragmentByTag(AUTHORIZATION_FRAGMENT_TAG)
                         currentFragment!!.arguments = bundle
                         currentFragment.onResume()
+                        this.dialog?.dismiss()
                     } catch (e: Exception) {
 
                     }

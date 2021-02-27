@@ -37,14 +37,12 @@ class RatingDialogFragment : AppCompatDialogFragment() {
         scoresPreferences =
             context!!.getSharedPreferences(SCORES_OF_GAME, Context.MODE_PRIVATE)
         rattingScore = scoresPreferences.getInt(SCORES_OF_GAME, 0)
-        partScore=scoresPreferences.getInt("$sharedUsername $getPart ", 0)
         mainScore=scoresPreferences.getInt(sharedUsername,0)
-        //մաքսիմալ միավորը համեմատում է խաղի ընթացիկ միավորի հետ
-        partScore=if(rattingScore>partScore) rattingScore else partScore
-        scoresPreferences.edit()?.putInt("$sharedUsername $getPart ", partScore)?.apply()
-        //ընդհանուր միավորը գումարում է խաղի ընթացիկ միավորին
+        partScore=scoresPreferences.getInt("$sharedUsername $getPart ", 0)
         mainScore += rattingScore
+        partScore += rattingScore
         scoresPreferences.edit()?.putInt(sharedUsername, mainScore)?.apply()
+        scoresPreferences.edit()?.putInt("$sharedUsername $getPart ", partScore)?.apply()
 
         return activity?.let {
             val builder = AlertDialog.Builder(it)
@@ -57,6 +55,14 @@ class RatingDialogFragment : AppCompatDialogFragment() {
                 .setNegativeButton(getText(R.string.close)) { _, _ ->
                     scoresPreferences.edit()?.putString(SCORES_OF_GAME, "0")?.apply()
                     this.dialog?.dismiss()
+
+                    //            Տեղափոխվում է մենյու
+                    val fragmentTransaction =
+                        (activity as MainActivity).supportFragmentManager.beginTransaction()
+                    fragmentTransaction.apply {
+                        this.replace(R.id.main_activity, StartPageFragment(), START_PAGE_FRAGMENT_TAG)
+                        commit()
+                    }
                 }
             builder.create()
         } ?: throw IllegalStateException(getText(R.string.activity_error).toString())

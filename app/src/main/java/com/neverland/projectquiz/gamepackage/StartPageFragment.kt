@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ProgressBar
 import android.widget.RadioButton
 import android.widget.TextView
 import androidx.fragment.app.Fragment
@@ -22,6 +23,10 @@ class StartPageFragment : Fragment() {
     private var fifthPart: RadioButton? = null
     private var startButton: Button? = null
     private var backButton: TextView? = null
+    private var currentLevelText: TextView? = null
+    private var nextLevelText: TextView? = null
+    private var progressLevelText: TextView? = null
+    private var progressLevel: ProgressBar? = null
     private var checkedRadioId = ""
     private lateinit var partsPreferences :SharedPreferences
     private lateinit var scoresPreferences: SharedPreferences
@@ -70,43 +75,74 @@ class StartPageFragment : Fragment() {
         }
     }
 
-    @SuppressLint("CutPasteId")
+    @SuppressLint("CutPasteId", "SetTextI18n")
     private fun initViews(view: View) {
-        val sharedUsername = sharedPreferences.getString(GET_USERNAME, "").toString()
-        val mainScore=scoresPreferences.getInt(sharedUsername,0)
-
+        progressLevel=view.findViewById(R.id.progress_level)
+        progressLevel!!.max=150
+        progressLevel!!.progress=0
+        progressLevelText=view.findViewById(R.id.progress_level_text)
+        currentLevelText=view.findViewById(R.id.current_level)
+        nextLevelText=view.findViewById(R.id.next_level)
         factsPart=view.findViewById(R.id.facts_of_history)
-        factsPart?.isEnabled =(mainScore<250)
-        factsPart?.isChecked=(mainScore<250)
-        if(mainScore>=251) factsPart?.setText(R.string.finished)
-
         firstPart = view.findViewById(R.id.kingdom_of_van)
-        firstPart?.isEnabled =(mainScore in 251..750)
-        firstPart?.isChecked=(mainScore in 251..750)
-        if(mainScore>=751) firstPart?.setText(R.string.finished)
-
         secondPart = view.findViewById(R.id.yervanduni_family)
-        secondPart?.isEnabled =(mainScore in 751..1350)
-        secondPart?.isChecked =(mainScore in 751..1350)
-        if(mainScore>=1351) secondPart?.setText(R.string.finished)
-
         thirdPart = view.findViewById(R.id.artashesyan_family)
-        thirdPart?.isEnabled =(mainScore in 1351..2050)
-        thirdPart?.isChecked =(mainScore in 1351..2050)
-        if(mainScore>=2051) firstPart?.setText(R.string.finished)
-
         fourthPart = view.findViewById(R.id.arshakuni_family)
-        fourthPart?.isEnabled =(mainScore in 2051..2850)
-        fourthPart?.isChecked =(mainScore in 2051..2850)
-        if(mainScore>=2851) firstPart?.setText(R.string.finished)
-
-//        fifthPart = view.findViewById(R.id.bagratuni_family)
-//        fifthPart?.isEnabled =(mainScore>1001)
-//        fifthPart?.isChecked =(mainScore>1251)
-
+        fifthPart = view.findViewById(R.id.bagratuni_family)
         startButton = view.findViewById(R.id.start)
         backButton = view.findViewById(R.id.backButton)
+
+        val sharedUsername = sharedPreferences.getString(GET_USERNAME, "").toString()
+
+        when(val mainScore=scoresPreferences.getInt(sharedUsername,0)){
+            in 0..150->{
+                factsPart?.isEnabled=true
+                factsPart?.isChecked=true
+                currentLevelText?.setText(R.string._1)
+                nextLevelText?.setText(R.string._2)
+                progressLevelText?.text= "$mainScore/150"
+                progressLevel!!.progress=mainScore
+            }
+            in 151..300->{
+                firstPart?.isEnabled=true
+                firstPart?.isChecked=true
+                currentLevelText?.setText(R.string._2)
+                nextLevelText?.setText(R.string._3)
+                progressLevelText?.text= "$mainScore/300"
+                progressLevel!!.progress=mainScore-150
+            }
+            in 301..450->{
+                secondPart?.isEnabled=true
+                secondPart?.isChecked=true
+                currentLevelText?.setText(R.string._3)
+                nextLevelText?.setText(R.string._4)
+                progressLevelText?.text= "$mainScore/450"
+                progressLevel!!.progress=mainScore-300
+            }
+            in 451..600->{
+                thirdPart?.isEnabled=true
+                thirdPart?.isChecked=true
+                currentLevelText?.setText(R.string._4)
+                nextLevelText?.setText(R.string._5)
+                progressLevelText?.text= "$mainScore/600"
+                progressLevel!!.progress=mainScore-451
+            }
+            in 601..750->{
+                fourthPart?.isEnabled=true
+                fourthPart?.isChecked=true
+                currentLevelText?.setText(R.string._5)
+                nextLevelText?.setText(R.string._6)
+                progressLevelText?.text= "$mainScore/750"
+                progressLevel!!.progress=mainScore-600
+            }
+            else->{
+                fifthPart?.isEnabled=true
+                fifthPart?.isChecked=true
+                currentLevelText?.setText(R.string._6)
+                nextLevelText?.setText(R.string._7)
+                progressLevelText?.text= "$mainScore/-"
+                progressLevel!!.progress=mainScore-750
+            }
+        }
     }
-
-
 }

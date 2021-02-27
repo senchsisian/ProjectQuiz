@@ -116,15 +116,6 @@ import com.neverland.projectquiz.repo.DataProviderRepo
             //ձևավորում է խաղի ավարտը
             scoresPreferences.edit()?.putInt(SCORES_OF_GAME, currentCount.text.toString().toInt() )?.apply()
 
-//            Տեղափոխվում է մենյու
-            (activity as MainActivity).supportActionBar?.show()
-            val fragmentTransaction =
-                (activity as MainActivity).supportFragmentManager.beginTransaction()
-            fragmentTransaction.apply {
-                this.replace(R.id.main_activity, MenuPageFragment(), MENU_PAGE_FRAGMENT_TAG)
-                commit()
-            }
-
 //            Կանչվում է խաղի արդյունքի դիալոգ-պատուհանը
             val manager = (activity as MainActivity).supportFragmentManager
             val getFragment=RatingDialogFragment()
@@ -158,7 +149,7 @@ import com.neverland.projectquiz.repo.DataProviderRepo
 
     private fun initViews(view: View) {
         //իրականացվում է ֆրագմենտի view-երի ներկայացում
-        answerOne = view.findViewById(R.id.answer_1)
+        answerOne = view.findViewById(R.id.close_rating_window)
         answerTwo = view.findViewById(R.id.answer_2)
         answerThree = view.findViewById(R.id.answer_3)
         answerFour = view.findViewById(R.id.answer_4)
@@ -173,19 +164,25 @@ import com.neverland.projectquiz.repo.DataProviderRepo
         //իրականացվում է timer-ի աշխատանքը
         val timerViewModel = ViewModelProvider(this).get(TimerViewModel::class.java)
         timerViewModel.start()
-        timerViewModel.liveTimerInfo.observe(viewLifecycleOwner, {
-            val minutes:String=if((it/60)<10L) "0${it/60}" else (it/60).toString()
-            val digits=it-(it/60).toInt()*60L
-            val seconds: String = if (digits < 10L) "0$digits" else digits.toString()
-            getCurrentTimer =
-                it.toInt()
-            timerText.text = "Մնաց $minutes:$seconds"// պատկերում է ժամանակը
-
-            if(it==0L){
-                showNextQuestion()
-            }
-        })
+        if ( !timerViewModel.liveTimerInfo.hasActiveObservers()){
+            observe(timerViewModel)
+        }
 
     }
+     @SuppressLint("SetTextI18n")
+     private fun observe(timerViewModel: TimerViewModel){
+         timerViewModel.liveTimerInfo.observe(viewLifecycleOwner, {
+             val minutes:String=if((it/60)<10L) "0${it/60}" else (it/60).toString()
+             val digits=it-(it/60).toInt()*60L
+             val seconds: String = if (digits < 10L) "0$digits" else digits.toString()
+             getCurrentTimer =
+                 it.toInt() //Մնացորդային ժամանակը ընդհանուր հաշվին է գումարվելու ճիշտ պատասխանի դեպքում
+             timerText.text = "Մնաց $minutes:$seconds"// պատկերում է ժամանակը
+             Log.d("lalala", "timer: $it")
+             if(it==0L){
+                 showNextQuestion()
+             }
+         })
+     }
 
 }
