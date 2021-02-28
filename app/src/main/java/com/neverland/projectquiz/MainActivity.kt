@@ -1,6 +1,7 @@
 package com.neverland.projectquiz
 
 import android.content.Context
+import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.os.Bundle
@@ -9,6 +10,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.neverland.projectquiz.autorizationandregister.AuthorizationFragment
 import com.neverland.projectquiz.database.GetDataFromFirebase
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -47,4 +49,10 @@ class MainActivity : AppCompatActivity() {
     override fun onBackPressed() {
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        for (fragment in supportFragmentManager.fragments) {
+            fragment.onActivityResult(requestCode, resultCode, data)
+        }
+    }
 }

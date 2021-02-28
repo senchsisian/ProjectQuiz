@@ -17,14 +17,13 @@ class GetDataFromFirebase {
     private lateinit var quiz: DatabaseReference
     private lateinit var dataDB: DataDB
     private var dataMutable = mutableListOf<DataModel>()
-    private var getElement = DataModel(Random.nextInt(), "", 0, "", "", "", "", "", "")
+    private var getElement = DataModel(Random.nextInt(), EMPTY, 0, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY)
 
     fun getDataFromFirebase(context: Context) {
         //մաքրում է SQLLite DataBase
         dataDB = Room.databaseBuilder(context, DataDB::class.java, GET_DATA).build()
         GlobalScope.launch(Dispatchers.IO) {
             dataDB.getDataDao().deleteAll()
-            Log.v("Removing elements", getElement.toString())
         }
 
         //գրանցում է շտեմարանը
@@ -56,7 +55,7 @@ class GetDataFromFirebase {
                         getElement.id = key
                         getElement.idKey = Random.nextInt()
                         dataMutable.add(getElement)
-                        getElement = DataModel(Random.nextInt(), "", 0, "", "", "", "", "", "")
+                        getElement = DataModel(Random.nextInt(), EMPTY, 0, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY)
                     }
                 }
                 val sizeData = dataMutable.size

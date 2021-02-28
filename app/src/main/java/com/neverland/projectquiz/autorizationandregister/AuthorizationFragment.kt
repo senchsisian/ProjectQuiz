@@ -41,12 +41,12 @@ class AuthorizationFragment : Fragment() {
         //Firebase-ի կարգավրումներ և նախապատրաստում
         firebaseAuth = FirebaseAuth.getInstance()
         db = FirebaseDatabase.getInstance()
-        users = db.getReference("Users")
+        users = db.getReference(USERS)
          sharedPreferences=
              context!!.getSharedPreferences(AUTHORIZATION, Context.MODE_PRIVATE)
-        val sharedEmail = sharedPreferences.getString(GET_EMAIL, "")
-        val sharedPass = sharedPreferences.getString(GET_PASS, "")
-        if(sharedPass!="" && sharedEmail!="" && sharedPass!=null){
+        val sharedEmail = sharedPreferences.getString(GET_EMAIL, EMPTY)
+        val sharedPass = sharedPreferences.getString(GET_PASS, EMPTY)
+        if(sharedPass!=EMPTY && sharedEmail!=EMPTY && sharedPass!=null){
             (activity as MainActivity).supportActionBar?.show()
             (activity as MainActivity).supportFragmentManager.beginTransaction().apply {
                 this.add(R.id.main_activity,  MenuPageFragment(), MENU_PAGE_FRAGMENT_TAG)
@@ -120,7 +120,7 @@ class AuthorizationFragment : Fragment() {
         getFragment.show(manager, fragmentTag)
     }
 
-    private fun snackBarMake(getText: String, messageText: String = "") {
+    private fun snackBarMake(getText: String, messageText: String = EMPTY) {
 
         //Լողացող պատուհանի գեներաացում
         Snackbar.make(
@@ -137,7 +137,7 @@ class AuthorizationFragment : Fragment() {
         is_Register: Boolean
     ): Boolean {
         //Իրականացվում է գրանցման տվյալների ստուգում և գրանցում
-        if (get_Pass != "" && get_Username != "" && get_Email != "" && is_Register) {
+        if (get_Pass != EMPTY && get_Username != EMPTY && get_Email != EMPTY && is_Register) {
             firebaseAuth.createUserWithEmailAndPassword(get_Email, get_Pass)
                 .addOnSuccessListener {
                     val user = User()
@@ -163,7 +163,7 @@ class AuthorizationFragment : Fragment() {
 
     private fun loginUser(login_Pass: String, login_Email: String, is_Login: Boolean): Boolean {
         //Իրականացվում է մուտքի վավերացման տվյալների ստուգում  և մուտք
-        if (login_Pass != "" && login_Email != "" && is_Login) {
+        if (login_Pass != EMPTY && login_Email != EMPTY && is_Login) {
             firebaseAuth.signInWithEmailAndPassword(login_Email, login_Pass)
                 .addOnSuccessListener {
 

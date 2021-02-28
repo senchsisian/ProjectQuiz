@@ -27,7 +27,7 @@ class StartPageFragment : Fragment() {
     private var nextLevelText: TextView? = null
     private var progressLevelText: TextView? = null
     private var progressLevel: ProgressBar? = null
-    private var checkedRadioId = ""
+    private var checkedRadioId = EMPTY
     private lateinit var partsPreferences :SharedPreferences
     private lateinit var scoresPreferences: SharedPreferences
     private lateinit var sharedPreferences: SharedPreferences
@@ -66,7 +66,7 @@ class StartPageFragment : Fragment() {
                 thirdPart?.isChecked == true -> ARTASHESYANS_FAMILY
                 fourthPart?.isChecked == true -> ARSHAKUNIS_FAMILY
                 fifthPart?.isChecked == true -> BAGRATUNIS_FAMILY
-                else -> ""
+                else -> EMPTY
             }
             partsPreferences.edit()?.putString(PARTS_OF_GAME, checkedRadioId)?.apply()
             val manager = (activity as MainActivity).supportFragmentManager
@@ -92,7 +92,7 @@ class StartPageFragment : Fragment() {
         startButton = view.findViewById(R.id.start)
         backButton = view.findViewById(R.id.backButton)
 
-        val sharedUsername = sharedPreferences.getString(GET_USERNAME, "").toString()
+        val sharedUsername = sharedPreferences.getString(GET_USERNAME, EMPTY).toString()
 
         when(val mainScore=scoresPreferences.getInt(sharedUsername,0)){
             in 0..150->{

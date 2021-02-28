@@ -31,7 +31,7 @@ class AllRatingsPageFragment : Fragment() {
      private var arshakunisFamilyScore=0
      private var bagratunidFamilyScore=0
 
-     private var sharedUsername=""
+     private var sharedUsername=EMPTY
 
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var scoresPreferences: SharedPreferences
@@ -39,7 +39,7 @@ class AllRatingsPageFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sharedPreferences = context!!.getSharedPreferences(GET_USERNAME, Context.MODE_PRIVATE)
-        sharedUsername = sharedPreferences.getString(GET_USERNAME, "").toString()
+        sharedUsername = sharedPreferences.getString(GET_USERNAME, EMPTY).toString()
 
         scoresPreferences = context!!.getSharedPreferences(SCORES_OF_GAME, Context.MODE_PRIVATE)
         mainScore=scoresPreferences.getInt(sharedUsername,0)

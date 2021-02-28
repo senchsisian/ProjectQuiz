@@ -16,12 +16,12 @@ class OpeningGameDialogFragment : AppCompatDialogFragment() {
     private var getId=0
     private var getText=0
     private lateinit var sharedPreferences: SharedPreferences
-    private var partsOfGame = ""
+    private var partsOfGame = EMPTY
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         sharedPreferences =
             context!!.getSharedPreferences(PARTS_OF_GAME, Context.MODE_PRIVATE)
-        partsOfGame = sharedPreferences.getString(PARTS_OF_GAME, "").toString()
+        partsOfGame = sharedPreferences.getString(PARTS_OF_GAME, EMPTY).toString()
 
         when(partsOfGame) {
             FACTS_OF_HISTORY -> {

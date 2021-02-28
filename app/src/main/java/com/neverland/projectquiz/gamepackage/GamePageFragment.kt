@@ -32,7 +32,7 @@ import com.neverland.projectquiz.repo.DataProviderRepo
     private lateinit var scoresPreferences:SharedPreferences
     private var indexOfData = 0
     private var backButton: TextView? = null
-    private var answerRight = ""
+    private var answerRight = EMPTY
     private var rightAnswerButtonNumber = 0
     private var countOfRightAnswers = 0
     private var getCurrentTimer = 0
@@ -48,7 +48,7 @@ import com.neverland.projectquiz.repo.DataProviderRepo
         scoresPreferences =
             context!!.getSharedPreferences(SCORES_OF_GAME, Context.MODE_PRIVATE)
 
-        val getPart = sharedPreferences.getString(PARTS_OF_GAME, "").toString()
+        val getPart = sharedPreferences.getString(PARTS_OF_GAME, EMPTY).toString()
         gamePageViewModel = ViewModelProvider(this).get(GamePageViewModel::class.java)
         context?.let {
             DataProviderRepo.setContextAndInitDb(it)

@@ -1,7 +1,8 @@
 package com.neverland.projectquiz
 
-//DATA DB version
-const val DATABASE_VERSION = 9
+//DATA
+const val DATABASE_VERSION = 10
+const val GALLERY_REQUEST = 1
 
 //fragments Tags
 const val REGISTER_DIALOG_FRAGMENT_TAG = "REGISTER DIALOG FRAGMENT"
@@ -19,6 +20,7 @@ const val EMPTY = ""
 const val ZERO = 0
 const val ZERO_STR = "0"
 const val DEBUG_TAG = "NetworkStatusExample"
+const val IMAGE = "image/*"
 
 //game parts
 const val FACTS_OF_HISTORY = "FactsOfHistory"
@@ -31,7 +33,9 @@ const val PARTS_OF_GAME = "Parts o game"
 const val SCORES_OF_GAME = "Scores o game"
 
 //authorization fragment
+const val USERS = "Users"
 const val GET_USERNAME = "get username"
+const val GET_AVATAR = "get avatar"
 const val GET_EMAIL = "get email"
 const val GET_PASS = "get pass"
 const val USERNAME = "username"

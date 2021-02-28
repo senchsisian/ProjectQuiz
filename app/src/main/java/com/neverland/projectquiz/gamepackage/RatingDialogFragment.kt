@@ -18,21 +18,21 @@ class RatingDialogFragment : AppCompatDialogFragment() {
     private lateinit var scoresPreferences: SharedPreferences
     private lateinit var partsPreferences: SharedPreferences
     private lateinit var sharedPreferences: SharedPreferences
-    private var rattingScore = 0
-    private var getPart = ""
-    private var sharedUsername = ""
-    private var mainScore=0
-    private var partScore=0
+    private var rattingScore = ZERO
+    private var getPart = EMPTY
+    private var sharedUsername = EMPTY
+    private var mainScore=ZERO
+    private var partScore=ZERO
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         //Ստանում է վերջին խաղի անցանումը
         partsPreferences =
             context!!.getSharedPreferences(PARTS_OF_GAME, Context.MODE_PRIVATE)
-        getPart=partsPreferences.getString(PARTS_OF_GAME, "").toString()
+        getPart=partsPreferences.getString(PARTS_OF_GAME, EMPTY).toString()
         //Ստանում է խաղացողի օգտանունը
         sharedPreferences =
             context!!.getSharedPreferences(GET_USERNAME, Context.MODE_PRIVATE)
-        sharedUsername = sharedPreferences.getString(GET_USERNAME, "").toString()
+        sharedUsername = sharedPreferences.getString(GET_USERNAME, EMPTY).toString()
         //ստանում է խաղացողի տվյալ խաղի մաքսիմալ միավորը և ընդհանուն միավորը
         scoresPreferences =
             context!!.getSharedPreferences(SCORES_OF_GAME, Context.MODE_PRIVATE)
@@ -53,7 +53,7 @@ class RatingDialogFragment : AppCompatDialogFragment() {
 
             builder.setView(inputWindow)
                 .setNegativeButton(getText(R.string.close)) { _, _ ->
-                    scoresPreferences.edit()?.putString(SCORES_OF_GAME, "0")?.apply()
+                    scoresPreferences.edit()?.putString(SCORES_OF_GAME, ZERO_STR)?.apply()
                     this.dialog?.dismiss()
 
                     //            Տեղափոխվում է մենյու
@@ -75,7 +75,7 @@ class RatingDialogFragment : AppCompatDialogFragment() {
         val getId = when {
             rattingScore>= 100 -> R.drawable.rating_three_stars
             rattingScore >= 50 -> R.drawable.rating_two_stars
-            rattingScore > 0 -> R.drawable.rating_star
+            rattingScore > ZERO -> R.drawable.rating_star
             else -> R.drawable.sad_smile
         }
         ratingStars.setImageDrawable(getDrawable(requireContext(), getId))
