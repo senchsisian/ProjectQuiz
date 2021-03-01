@@ -172,8 +172,6 @@ class AuthorizationFragment : Fragment() {
                     val valueEventListener = object : ValueEventListener {
                         override fun onDataChange(snapshot: DataSnapshot) {
                             for (dSnapshot in snapshot.children) {
-                                val getProgress=progressBar!!.progress
-                                progressBar!!.progress=getProgress+1
                                 val key: String = dSnapshot.key.toString()
                                 val value: String = dSnapshot.value.toString()
                                 if (key == USERNAME) loginUsername =

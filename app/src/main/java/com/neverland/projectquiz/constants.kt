@@ -3,6 +3,7 @@ package com.neverland.projectquiz
 //DATA
 const val DATABASE_VERSION = 10
 const val GALLERY_REQUEST = 1
+const val MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1
 
 //fragments Tags
 const val REGISTER_DIALOG_FRAGMENT_TAG = "REGISTER DIALOG FRAGMENT"

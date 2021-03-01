@@ -24,14 +24,13 @@ class MenuPageFragment : Fragment() {
     private var usernameText: TextView? = null
     private var avatarImage: ImageView? = null
     private var getAvatar:String=EMPTY
-
     private lateinit var sharedPreferences : SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
         sharedPreferences=context!!.getSharedPreferences(AUTHORIZATION, Context.MODE_PRIVATE)
-        getAvatar= sharedPreferences.getString(GET_AVATAR,EMPTY).toString()
+        getAvatar= sharedPreferences.getString(GET_AVATAR, EMPTY).toString()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -115,7 +114,7 @@ class MenuPageFragment : Fragment() {
             GALLERY_REQUEST -> if (resultCode == RESULT_OK) {
                 val selectedImage: Uri? = data?.data
                 try {
-                   setAvatar(selectedImage )
+                    setAvatar(selectedImage)
                 } catch (e: IOException) {
                     e.printStackTrace()
                 }
@@ -145,8 +144,8 @@ class MenuPageFragment : Fragment() {
         )
     }
 
-    private fun setAvatar(uri:Uri?){
-        Toast.makeText(context,uri.toString(),Toast.LENGTH_LONG).show()
+    private fun setAvatar(uri: Uri?){
+        Toast.makeText(context, uri.toString(), Toast.LENGTH_LONG).show()
         getAvatar=uri.toString()
         sharedPreferences.edit()?.putString(GET_AVATAR, getAvatar)?.apply()
         avatarImage?.setImageURI(null)
