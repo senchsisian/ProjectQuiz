@@ -1,5 +1,8 @@
 package com.neverland.projectquiz.gamepackage
 
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,58 +12,177 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.room.Room
-import com.neverland.projectquiz.R
-import com.neverland.projectquiz.database.DataDB
+import com.neverland.projectquiz.*
 import com.neverland.projectquiz.database.DataModel
-import com.neverland.projectquiz.database.GET_DATA
-import com.neverland.projectquiz.models.TimerModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import com.neverland.projectquiz.models.GamePageViewModel
+import com.neverland.projectquiz.models.TimerViewModel
+import com.neverland.projectquiz.repo.DataProviderRepo
 
-class GamePageFragment : Fragment() {
+ class GamePageFragment : Fragment() {
     private lateinit var answerOne: Button
     private lateinit var answerTwo: Button
     private lateinit var answerThree: Button
     private lateinit var answerFour: Button
     private lateinit var questionText: TextView
+    private lateinit var currentCount: TextView
     private lateinit var timerText: TextView
-    private lateinit var dataDB: DataDB
-    private lateinit var getDataList:List<DataModel>
-   // private val indexOfData=0
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        dataDB= Room.databaseBuilder(this.requireContext(), DataDB::class.java, GET_DATA).build()
-        GlobalScope.launch(Dispatchers.IO) {
-            getDataList=dataDB.getDataDao().getAllData()
-            Log.v("Getting elements in game page", getDataList.toString())
-        }
-    }
+    private lateinit var dataList: List<DataModel>
+    private lateinit var gamePageViewModel: GamePageViewModel
+    private lateinit var sharedPreferences:SharedPreferences
+    private lateinit var scoresPreferences:SharedPreferences
+    private var indexOfData = 0
+    private var backButton: TextView? = null
+    private var answerRight = EMPTY
+    private var rightAnswerButtonNumber = 0
+    private var countOfRightAnswers = 0
+    private var getCurrentTimer = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val infVar = inflater.inflate(R.layout.fragment_game_page, container, false)
-        answerOne = infVar.findViewById(R.id.answer_1)
-        answerTwo = infVar.findViewById(R.id.answer_2)
-        answerThree = infVar.findViewById(R.id.answer_3)
-        answerFour = infVar.findViewById(R.id.answer_4)
-        questionText = infVar.findViewById(R.id.questionText)
-        timerText = infVar.findViewById(R.id.timer_text)
+        //Ստանում ենք Room-ից հարցերի լիստը և սկսում խաղը
+        sharedPreferences =
+            context!!.getSharedPreferences(PARTS_OF_GAME, Context.MODE_PRIVATE)
+        scoresPreferences =
+            context!!.getSharedPreferences(SCORES_OF_GAME, Context.MODE_PRIVATE)
 
-        val timerModel = ViewModelProvider(this).get(TimerModel::class.java)
-        timerModel.start()
-        timerModel.timerValue.observe(viewLifecycleOwner, { timerText.text = it.toString()})
-        return infVar
+        val getPart = sharedPreferences.getString(PARTS_OF_GAME, EMPTY).toString()
+        gamePageViewModel = ViewModelProvider(this).get(GamePageViewModel::class.java)
+        context?.let {
+            DataProviderRepo.setContextAndInitDb(it)
+        }
+        gamePageViewModel.getDataFromDB(getPart)
+        gamePageViewModel.liveDataGameInfo.observe(viewLifecycleOwner, { dataModels ->
+            Log.d("getElement", "value posted: $dataModels")
+            dataList = dataModels
+            showNextQuestion()
+        })
+        return inflater.inflate(R.layout.fragment_game_page, container, false)
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables", "ResourceAsColor")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initViews(view)
+        timerView()
+        answerOne.setOnClickListener {
+            if (rightAnswerButtonNumber == 1) {
+                countOfRightAnswers += getCurrentTimer
+                currentCount.text = countOfRightAnswers.toString()
+            }
+            showNextQuestion()
+            timerView()
+        }
+        answerTwo.setOnClickListener {
+            if (rightAnswerButtonNumber == 2) {
+                countOfRightAnswers += getCurrentTimer
+                currentCount.text = countOfRightAnswers.toString()
+            }
+            showNextQuestion()
+            timerView()
+        }
+        answerThree.setOnClickListener {
+            if (rightAnswerButtonNumber == 3) {
+                countOfRightAnswers += getCurrentTimer
+                currentCount.text = countOfRightAnswers.toString()
+            }
+            showNextQuestion()
+            timerView()
+        }
+        answerFour.setOnClickListener {
+            if (rightAnswerButtonNumber == 4) {
+                countOfRightAnswers += getCurrentTimer
+                currentCount.text = countOfRightAnswers.toString()
+            }
+            showNextQuestion()
+            timerView()
+        }
+
+        backButton?.setOnClickListener {
+            val fragmentTransaction =
+                (activity as MainActivity).supportFragmentManager.beginTransaction()
+            fragmentTransaction.apply {
+                this.replace(R.id.main_activity, StartPageFragment(), START_PAGE_FRAGMENT_TAG)
+                commit()
+            }
+        }
+    }
+
+    private fun showNextQuestion() {
+        //իրականացվում է հարցերի հերթափոխում
+        if (indexOfData >= dataList.size) {
+            //ձևավորում է խաղի ավարտը
+            scoresPreferences.edit()?.putInt(SCORES_OF_GAME, currentCount.text.toString().toInt() )?.apply()
+
+//            Կանչվում է խաղի արդյունքի դիալոգ-պատուհանը
+            val manager = (activity as MainActivity).supportFragmentManager
+            val getFragment=RatingDialogFragment()
+            getFragment.show(manager, RATING_FRAGMENT_TAG)
+        } else {
+            updateViewsWithData(dataList[indexOfData])
+            indexOfData++
+            timerView()
+        }
+    }
+
+    @SuppressLint("UseCompatLoadingForDrawables", "SetTextI18n")
+    private fun updateViewsWithData(singleData: DataModel) {
+        // իրականացվում է ֆրագմենտի view-երի արժեքների վերագրում
+        rightAnswerButtonNumber = 0
+        answerRight = singleData.answerRight
+        answerOne.text = singleData.answer1
+        answerTwo.text = singleData.answer2
+        answerThree.text = singleData.answer3
+        answerFour.text = singleData.answer4
+        questionText.text = "${indexOfData + 1}. ${singleData.question}"
+
+        rightAnswerButtonNumber = when (answerRight) {
+            answerOne.text -> 1
+            answerTwo.text -> 2
+            answerThree.text -> 3
+            answerFour.text -> 4
+            else -> 0
+        }
+    }
+
+    private fun initViews(view: View) {
+        //իրականացվում է ֆրագմենտի view-երի ներկայացում
+        answerOne = view.findViewById(R.id.close_rating_window)
+        answerTwo = view.findViewById(R.id.answer_2)
+        answerThree = view.findViewById(R.id.answer_3)
+        answerFour = view.findViewById(R.id.answer_4)
+        questionText = view.findViewById(R.id.questionText)
+        timerText = view.findViewById(R.id.timer_text)
+        backButton = view.findViewById(R.id.backButton2)
+        currentCount = view.findViewById(R.id.scoreText)
+    }
+
+    @SuppressLint("SetTextI18n")
+    fun timerView() {
+        //իրականացվում է timer-ի աշխատանքը
+        val timerViewModel = ViewModelProvider(this).get(TimerViewModel::class.java)
+        timerViewModel.start()
+        if ( !timerViewModel.liveTimerInfo.hasActiveObservers()){
+            observe(timerViewModel)
+        }
 
     }
+     @SuppressLint("SetTextI18n")
+     private fun observe(timerViewModel: TimerViewModel){
+         timerViewModel.liveTimerInfo.observe(viewLifecycleOwner, {
+             val minutes:String=if((it/60)<10L) "0${it/60}" else (it/60).toString()
+             val digits=it-(it/60).toInt()*60L
+             val seconds: String = if (digits < 10L) "0$digits" else digits.toString()
+             getCurrentTimer =
+                 it.toInt() //Մնացորդային ժամանակը ընդհանուր հաշվին է գումարվելու ճիշտ պատասխանի դեպքում
+             timerText.text = "Մնաց $minutes:$seconds"// պատկերում է ժամանակը
+             Log.d("lalala", "timer: $it")
+             if(it==0L){
+                 showNextQuestion()
+             }
+         })
+     }
+
 }
