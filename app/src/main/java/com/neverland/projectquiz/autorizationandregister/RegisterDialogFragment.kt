@@ -12,6 +12,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.neverland.projectquiz.*
 import com.rengwuxian.materialedittext.MaterialEditText
 
+@Suppress("DEPRECATION")
 class RegisterDialogFragment : AppCompatDialogFragment() {
 
     var email: MaterialEditText? = null

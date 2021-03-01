@@ -4,20 +4,18 @@ import android.app.Activity.RESULT_OK
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.view.*
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.fragment.app.Fragment
 import com.neverland.projectquiz.*
 import com.neverland.projectquiz.autorizationandregister.AuthorizationFragment
 import java.io.IOException
 
 
-@Suppress("UNREACHABLE_CODE")
+@Suppress("UNREACHABLE_CODE", "DEPRECATION")
 class MenuPageFragment : Fragment() {
     private var playButton: Button? = null
     private var pointsOfGame: Button? = null
@@ -58,6 +56,15 @@ class MenuPageFragment : Fragment() {
             }
             R.id.avatar_menu -> {
                 changeAvatar()
+            }
+            R.id.info_menu->{
+                val toast = Toast.makeText(activity, "Հայկական վիկտորինա։ Հայոց պատմություն", Toast.LENGTH_LONG)
+                val toastContainer = toast.view as LinearLayout
+                val catImage = ImageView(activity)
+                catImage.setImageResource(R.drawable.main_apricot)
+                toastContainer.addView(catImage, 0)
+                toastContainer.setBackgroundColor(Color.TRANSPARENT)
+                toast.show()
             }
 
         }
@@ -145,7 +152,6 @@ class MenuPageFragment : Fragment() {
     }
 
     private fun setAvatar(uri: Uri?){
-        Toast.makeText(context, uri.toString(), Toast.LENGTH_LONG).show()
         getAvatar=uri.toString()
         sharedPreferences.edit()?.putString(GET_AVATAR, getAvatar)?.apply()
         avatarImage?.setImageURI(null)

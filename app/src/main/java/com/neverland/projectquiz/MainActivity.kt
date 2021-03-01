@@ -12,6 +12,7 @@ import com.neverland.projectquiz.autorizationandregister.AuthorizationFragment
 import com.neverland.projectquiz.database.GetDataFromFirebase
 
 
+@Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -74,4 +74,5 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="PLayers_rating_tabel">Խաղացողի միավորների ցանկը</string>
     <string name="total_rating">Ընդամենը</string>
+    <string name="game_info">Խաղի մասին</string>
 </resources>
