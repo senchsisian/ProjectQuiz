@@ -64,27 +64,9 @@ class MenuPageFragment : Fragment() {
                 changeAvatar()
             }
             R.id.info_menu -> {
-                val toast = Toast.makeText(
-                    activity,"",
-                    Toast.LENGTH_LONG
-                )
-                val view: View? =toast.view
-                val toastContainer = view as LinearLayout
-
-                val apricotImage = ImageView(activity)
-                apricotImage.setImageResource(R.drawable.main_apricot)
-                apricotImage.maxHeight=50
-                apricotImage.maxWidth=50
-                toastContainer.addView(apricotImage, 0)
-
-                val textView=TextView(activity)
-                textView.setTextColor(R.color.sign_in_stroke)
-                textView.setText(R.string.info_about_of_game)
-                textView.gravity = Gravity.FILL_HORIZONTAL
-                toastContainer.addView(textView,1)
-
-                toastContainer.setBackgroundResource(R.drawable.coral_color_gradient)
-                toast.show()
+                val manager = (activity as MainActivity).supportFragmentManager
+                val getFragment= AboutOfGame()
+                getFragment.show(manager, ABOUT_OF_GAME_TAG)
             }
 
         }
