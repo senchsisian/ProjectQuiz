@@ -1,11 +1,16 @@
 package com.neverland.projectquiz.gamepackage
 
+import android.annotation.SuppressLint
 import android.app.Activity.RESULT_OK
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.graphics.ImageDecoder
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.view.*
 import android.widget.*
@@ -21,14 +26,14 @@ class MenuPageFragment : Fragment() {
     private var pointsOfGame: Button? = null
     private var usernameText: TextView? = null
     private var avatarImage: ImageView? = null
-    private var getAvatar:String=EMPTY
-    private lateinit var sharedPreferences : SharedPreferences
+    private var getAvatar: String = EMPTY
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-        sharedPreferences=context!!.getSharedPreferences(AUTHORIZATION, Context.MODE_PRIVATE)
-        getAvatar= sharedPreferences.getString(GET_AVATAR, EMPTY).toString()
+        sharedPreferences = context!!.getSharedPreferences(AUTHORIZATION, Context.MODE_PRIVATE)
+        getAvatar = sharedPreferences.getString(GET_AVATAR, EMPTY).toString()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -37,10 +42,11 @@ class MenuPageFragment : Fragment() {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
+    @SuppressLint("ResourceAsColor")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         super.onOptionsItemSelected(item)
         //Մենյուի տարրերի  Listener ապահովում
-        when(item.itemId){
+        when (item.itemId) {
             R.id.exit_menu -> {
                 sharedPreferences.edit()?.putString(GET_EMAIL, EMPTY)?.apply()
                 sharedPreferences.edit()?.putString(GET_PASS, EMPTY)?.apply()
@@ -57,13 +63,27 @@ class MenuPageFragment : Fragment() {
             R.id.avatar_menu -> {
                 changeAvatar()
             }
-            R.id.info_menu->{
-                val toast = Toast.makeText(activity, "Հայկական վիկտորինա։ Հայոց պատմություն", Toast.LENGTH_LONG)
-                val toastContainer = toast.view as LinearLayout
-                val catImage = ImageView(activity)
-                catImage.setImageResource(R.drawable.main_apricot)
-                toastContainer.addView(catImage, 0)
-                toastContainer.setBackgroundColor(Color.TRANSPARENT)
+            R.id.info_menu -> {
+                val toast = Toast.makeText(
+                    activity,"",
+                    Toast.LENGTH_LONG
+                )
+                val view: View? =toast.view
+                val toastContainer = view as LinearLayout
+
+                val apricotImage = ImageView(activity)
+                apricotImage.setImageResource(R.drawable.main_apricot)
+                apricotImage.maxHeight=50
+                apricotImage.maxWidth=50
+                toastContainer.addView(apricotImage, 0)
+
+                val textView=TextView(activity)
+                textView.setTextColor(R.color.sign_in_stroke)
+                textView.setText(R.string.info_about_of_game)
+                textView.gravity = Gravity.FILL_HORIZONTAL
+                toastContainer.addView(textView,1)
+
+                toastContainer.setBackgroundResource(R.drawable.coral_color_gradient)
                 toast.show()
             }
 
@@ -80,7 +100,7 @@ class MenuPageFragment : Fragment() {
         initViews(infLater)
         //ստանում ենք խաղացողի անունը-օգտանունը
         val sharedUsername = sharedPreferences.getString(GET_USERNAME, EMPTY)
-        usernameText?.text=sharedUsername
+        usernameText?.text = sharedUsername
         return infLater
     }
 
@@ -114,9 +134,53 @@ class MenuPageFragment : Fragment() {
         }
     }
 
+    private fun initViews(view: View) {
+        //ֆրագմենտի տարրերի վերագրում
+        playButton = view.findViewById(R.id.playButton)
+        pointsOfGame = view.findViewById(R.id.points_of_game)
+        usernameText = view.findViewById(R.id.username_text)
+        avatarImage = view.findViewById(R.id.getAvatar)
+        if (getAvatar != EMPTY) {
+            context?.let {
+                avatarImage?.setImageURI(null)
+                avatarImage?.setImageBitmap(getBitmap(it, Uri.parse(getAvatar)))
+            }
+        }
+    }
+
+    //Իրականացվում է օպերացիոն համակարգի վերսիայի ստուգում և նկարի ձևավորում
+    private fun getBitmap(context: Context, imageUri: Uri): Bitmap? {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            ImageDecoder.decodeBitmap(
+                ImageDecoder.createSource(
+                    context.contentResolver,
+                    imageUri
+                )
+            )
+        } else {
+            context
+                .contentResolver
+                .openInputStream(imageUri)?.use { inputStream ->
+                    BitmapFactory.decodeStream(inputStream)
+                }
+        }
+    }
+
+    private fun changeAvatar() {
+        //բացում է հեռախոսի գալերիան՝նկարադարանը
+        val photoPickerIntent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+        photoPickerIntent.type = IMAGE
+        (activity as MainActivity).startActivityForResult(
+            Intent.createChooser(photoPickerIntent, "Select Picture"),
+            GALLERY_REQUEST,
+            null
+        )
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
+        //ստանում է ընտրված նկարի հասցեն
         when (requestCode) {
             GALLERY_REQUEST -> if (resultCode == RESULT_OK) {
                 val selectedImage: Uri? = data?.data
@@ -129,30 +193,9 @@ class MenuPageFragment : Fragment() {
         }
     }
 
-    private fun initViews(view: View) {
-        //ֆրագմենտի տարրերի վերագրում
-        playButton = view.findViewById(R.id.playButton)
-        pointsOfGame = view.findViewById(R.id.points_of_game)
-        usernameText = view.findViewById(R.id.username_text)
-        avatarImage = view.findViewById(R.id.getAvatar)
-        if(getAvatar!=EMPTY) {
-            avatarImage?.setImageURI(null)
-            avatarImage?.setImageURI(Uri.parse(getAvatar))
-        }
-    }
-
-    private fun changeAvatar(){
-        val photoPickerIntent = Intent(Intent.ACTION_PICK)
-        photoPickerIntent.type = IMAGE
-        (activity as MainActivity).startActivityForResult(
-            photoPickerIntent,
-            GALLERY_REQUEST,
-            null
-        )
-    }
-
-    private fun setAvatar(uri: Uri?){
-        getAvatar=uri.toString()
+    //նկարը տեղադրում imageview-ի մեջ
+    private fun setAvatar(uri: Uri?) {
+        getAvatar = uri.toString()
         sharedPreferences.edit()?.putString(GET_AVATAR, getAvatar)?.apply()
         avatarImage?.setImageURI(null)
         avatarImage?.setImageURI(uri)
